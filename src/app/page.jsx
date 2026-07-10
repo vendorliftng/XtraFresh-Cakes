@@ -179,6 +179,26 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Playful Gallery Section */}
+      <section id="gallery" className="py-section" style={{ background: 'var(--color-bg-alt)' }}>
+        <div className="container">
+           <div className="text-center" style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <h2 style={{ fontSize: '3.5rem', color: 'var(--color-text-main)' }}>Our Happy Masterpieces 📸</h2>
+            <p style={{ fontSize: '1.2rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Take a peek at some of the smiles we've baked recently!</p>
+          </div>
+          <div style={{ columnCount: 3, columnGap: '1.5rem' }}>
+            {[
+              '/assets/hero_cake.png', '/assets/category_wedding.png', '/assets/category_birthday.png', 
+              '/assets/category_anniversary.png', '/assets/hero_cake.png', '/assets/category_wedding.png'
+            ].map((src, i) => (
+              <motion.div key={i} whileHover={{ scale: 1.02, rotate: i % 2 === 0 ? 2 : -2 }} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} style={{ breakInside: 'avoid', marginBottom: '1.5rem', borderRadius: 'var(--border-radius)', overflow: 'hidden', border: '4px solid var(--color-border)', boxShadow: '0 10px 20px rgba(0,0,0,0.05)' }}>
+                <img src={src} alt="Cake Masterpiece" loading="lazy" style={{ width: '100%', display: 'block', borderRadius: 'calc(var(--border-radius) - 4px)' }} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Quote Form Section */}
       <section id="quote" className="py-section" style={{ background: 'var(--color-bg)' }}>
         <div className="container">
