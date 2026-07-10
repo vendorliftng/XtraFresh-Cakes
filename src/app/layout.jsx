@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
         <footer style={{ background: 'var(--color-primary)', color: 'white', padding: '4rem 0', textAlign: 'center' }}>
           <div className="container">
             <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '3rem', color: '#FFF', marginBottom: '1rem' }}>XTRA FRESH CAKES</h2>
-            <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>Every day should be a happy day! 🎂</p>
+            <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>Every day should be a happy day.</p>
             <p style={{ opacity: 0.8 }}>© {new Date().getFullYear()} Xtra Fresh Cakes. Lagos, Nigeria.</p>
           </div>
         </footer>
