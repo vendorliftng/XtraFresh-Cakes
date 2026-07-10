@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Loader2, CheckCircle, Mail, MessageCircle, Heart, Star, Sparkles } from 'lucide-react';
 
 export default function Home() {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+  const basePath = process.env.NODE_ENV === 'production' ? '/XtraFresh-Cakes' : '';
 
   // Form State
   const [isSubmitting, setIsSubmitting] = useState(false);
