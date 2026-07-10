@@ -31,21 +31,28 @@ export default function Home() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch('/api/quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+      const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_URL;
       
-      if (response.ok) {
-        setIsSuccess(true);
-        e.target.reset();
-        
-        // WhatsApp Redirect
-        const whatsappMsg = `Hi Xtra Fresh Cakes! I'd like to commission a cake.\n\nName: ${data.firstName} ${data.lastName}\nEvent: ${data.eventType} on ${data.eventDate}\nZone: ${data.deliveryZone}\nGuests: ${data.guestCount}\nDetails: ${data.vision}`;
-        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
-        window.open(whatsappUrl, '_blank');
+      if (scriptUrl) {
+        const response = await fetch(scriptUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+          mode: 'no-cors' // Required for direct Apps Script fetches
+        });
+      } else {
+        // Fallback for dev mode
+        await new Promise(resolve => setTimeout(resolve, 1500));
       }
+      
+      // Since no-cors hides the response status, we assume success if no error was thrown
+      setIsSuccess(true);
+      e.target.reset();
+      
+      // WhatsApp Redirect
+      const whatsappMsg = `Hi Xtra Fresh Cakes! I'd like to commission a cake.\n\nName: ${data.firstName} ${data.lastName}\nEvent: ${data.eventType} on ${data.eventDate}\nZone: ${data.deliveryZone}\nGuests: ${data.guestCount}\nDetails: ${data.vision}`;
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
+      window.open(whatsappUrl, '_blank');
     } catch (error) {
       console.error('Failed to submit quote:', error);
     } finally {
