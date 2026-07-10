@@ -1,8 +1,8 @@
 "use client";
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
-import { Loader2, CheckCircle, Mail, MessageCircle, Heart, Star, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Loader2, CheckCircle, Sparkles } from 'lucide-react';
 
 export default function Home() {
   const basePath = process.env.NODE_ENV === 'production' ? '/XtraFresh-Cakes' : '';
@@ -12,6 +12,14 @@ export default function Home() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isInquirySubmitting, setIsInquirySubmitting] = useState(false);
   const [isInquirySuccess, setIsInquirySuccess] = useState(false);
+  
+  // Preloader State
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const WHATSAPP_NUMBER = "2348021342856";
 
@@ -80,6 +88,35 @@ export default function Home() {
 
   return (
     <main>
+      {/* Fun Animated Preloader */}
+      <AnimatePresence>
+        {loading && (
+          <motion.div 
+            initial={{ y: 0 }} 
+            exit={{ y: '-100%', opacity: 0 }} 
+            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+            style={{ position: 'fixed', inset: 0, background: 'var(--color-bg)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <motion.div 
+              animate={{ rotate: 360, scale: [1, 1.2, 1] }} 
+              transition={{ rotate: { duration: 3, repeat: Infinity, ease: 'linear' }, scale: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' } }}
+            >
+              <div className="blob-shape" style={{ width: '150px', height: '150px', background: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 30px rgba(255, 51, 102, 0.3)' }}>
+                <Sparkles color="white" size={60} />
+              </div>
+            </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.5 }}
+              style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', color: 'var(--color-text-main)', marginTop: '2.5rem', fontFamily: 'var(--font-heading)' }}
+            >
+              Xtra Fresh Cakes
+            </motion.h2>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Hero Section */}
       <section style={{ minHeight: '100vh', paddingTop: '120px', paddingBottom: '4rem', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
         
@@ -91,18 +128,18 @@ export default function Home() {
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', alignItems: 'center' }}>
             <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, type: 'spring' }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'white', border: '3px solid var(--color-border)', padding: '0.5rem 1.2rem', borderRadius: '50px', fontWeight: 800, color: 'var(--color-primary)', marginBottom: '1.5rem' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'white', border: '3px solid var(--color-border)', padding: '0.5rem 1.2rem', borderRadius: '50px', fontWeight: 800, color: 'var(--color-primary)', marginBottom: '1.5rem', fontSize: 'clamp(0.8rem, 3vw, 1rem)' }}>
                 THE PREMIER LAGOS CAKE STUDIO
               </div>
-              <h1 style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', lineHeight: 1.1, color: 'var(--color-text-main)', marginBottom: '1.5rem' }}>
+              <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)', lineHeight: 1.1, color: 'var(--color-text-main)', margin: '0 0 1.5rem 0' }}>
                 Baking <span style={{ color: 'var(--color-primary)', display: 'inline-block', position: 'relative' }}>Masterpieces<svg style={{ position: 'absolute', bottom: '-10px', left: 0, width: '100%', height: '20px' }} viewBox="0 0 100 20"><path d="M0 10 Q 50 20 100 10" stroke="var(--color-secondary)" strokeWidth="6" fill="transparent"/></svg></span><br/>For Your Greatest Moments.
               </h1>
-              <p style={{ fontSize: '1.25rem', color: 'var(--color-text-muted)', marginBottom: '2.5rem', fontWeight: 600, maxWidth: '520px', lineHeight: 1.6 }}>
+              <p style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)', color: 'var(--color-text-muted)', marginBottom: '2.5rem', fontWeight: 600, maxWidth: '520px', lineHeight: 1.6 }}>
                 Welcome to Xtra Fresh Cakes. We don't just bake; we craft spectacular, conversation-starting centerpieces that taste even better than they look. Whether it is an intimate celebration or a massive luxury wedding, we deliver perfection every single time.
               </p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <a href="#collections" className="btn btn-primary" style={{ fontSize: '1.2rem', padding: '1.2rem 2.5rem' }}>View the Collections</a>
-                <a href="#quote" className="btn btn-secondary" style={{ fontSize: '1.2rem', padding: '1.2rem 2.5rem' }}>Commission a Cake</a>
+                <a href="#collections" className="btn btn-primary" style={{ padding: 'clamp(0.8rem, 3vw, 1.2rem) clamp(1.5rem, 5vw, 2.5rem)', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>View the Collections</a>
+                <a href="#quote" className="btn btn-secondary" style={{ padding: 'clamp(0.8rem, 3vw, 1.2rem) clamp(1.5rem, 5vw, 2.5rem)', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>Commission a Cake</a>
               </div>
             </motion.div>
             
@@ -110,11 +147,11 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.8 }} 
               animate={{ opacity: 1, scale: 1 }} 
               transition={{ duration: 0.8, type: 'spring' }}
-              style={{ position: 'relative', height: '600px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+              style={{ position: 'relative', minHeight: '400px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               {/* Hero Image Wrapper */}
-              <motion.div animate={{ y: [-15, 15] }} transition={bounceAnimation} style={{ position: 'relative', zIndex: 10 }}>
-                 <img src={`${basePath}/assets/hero_cake.png`} alt="Delicious Masterpiece Cake" style={{ width: '100%', maxWidth: '450px', borderRadius: '40px', border: '10px solid white', boxShadow: '0 20px 50px rgba(255, 51, 102, 0.2)', transform: 'rotate(3deg)' }} />
+              <motion.div animate={{ y: [-15, 15] }} transition={bounceAnimation} style={{ position: 'relative', zIndex: 10, width: '100%', display: 'flex', justifyContent: 'center' }}>
+                 <img src={`${basePath}/assets/hero_cake.png`} alt="Delicious Masterpiece Cake" style={{ width: '90%', maxWidth: '450px', borderRadius: '40px', border: 'clamp(5px, 2vw, 10px) solid white', boxShadow: '0 20px 50px rgba(255, 51, 102, 0.2)', transform: 'rotate(3deg)' }} />
               </motion.div>
             </motion.div>
           </div>
@@ -125,14 +162,14 @@ export default function Home() {
       <section id="founder" className="py-section" style={{ background: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-50px', left: 0, right: 0, height: '100px', background: 'var(--color-bg)', borderRadius: '0 0 50% 50%' }}></div>
         <div className="container" style={{ position: 'relative', zIndex: 10, marginTop: '2rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'center' }}>
             <div style={{ order: 2 }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.2)', padding: '0.5rem 1.2rem', borderRadius: '50px', fontWeight: 800, marginBottom: '1.5rem' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.2)', padding: '0.5rem 1.2rem', borderRadius: '50px', fontWeight: 800, marginBottom: '1.5rem', fontSize: 'clamp(0.8rem, 3vw, 1rem)' }}>
                 MEET THE VISIONARY
               </div>
-              <h2 style={{ fontSize: '3.5rem', color: 'white', marginBottom: '1.5rem' }}>Olaide Balikis Abdullateef</h2>
+              <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', color: 'white', margin: '0 0 1.5rem 0' }}>Olaide Balikis Abdullateef</h2>
               
-              <div style={{ fontSize: '1.15rem', fontWeight: 600, lineHeight: 1.8 }}>
+              <div style={{ fontSize: 'clamp(1rem, 3.5vw, 1.15rem)', fontWeight: 600, lineHeight: 1.8 }}>
                 <p style={{ marginBottom: '1.5rem' }}>
                   The story of Xtra Fresh Cakes does not begin in a massive commercial kitchen. It begins in 1993, driven by a pure, undeniable passion for the craft of baking.
                 </p>
@@ -147,8 +184,8 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div style={{ order: 1 }}>
-              <img src={`${basePath}/assets/hero_cake.png`} alt="Founder Olaide Balikis Abdullateef" loading="lazy" style={{ width: '100%', borderRadius: '40px', border: '8px solid white', transform: 'rotate(-3deg)' }} />
+            <div style={{ order: 1, display: 'flex', justifyContent: 'center' }}>
+              <img src={`${basePath}/assets/hero_cake.png`} alt="Founder Olaide Balikis Abdullateef" loading="lazy" style={{ width: '90%', maxWidth: '400px', borderRadius: '40px', border: 'clamp(5px, 2vw, 8px) solid white', transform: 'rotate(-3deg)' }} />
             </div>
           </div>
         </div>
@@ -158,24 +195,24 @@ export default function Home() {
       {/* Colorful Collections Section */}
       <section id="collections" className="py-section" style={{ background: 'white' }}>
         <div className="container">
-          <div className="text-center" style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h2 style={{ fontSize: '4rem', color: 'var(--color-primary)' }}>Signature Collections</h2>
-            <p style={{ fontSize: '1.2rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Crafted for those who demand excellence in taste and design.</p>
+          <div className="text-center" style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 4rem)' }}>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)', color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>Signature Collections</h2>
+            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>Crafted for those who demand excellence in taste and design.</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2.5rem' }}>
             {[
               { id: 'birthday', title: 'Epic Birthdays', desc: 'Unforgettable, towering centerpieces designed specifically to make your day extraordinary.', color: 'var(--color-primary)', img: `${basePath}/assets/category_birthday.png` },
               { id: 'wedding', title: 'Dreamy Weddings', desc: 'Elegant, multi-tiered masterpieces that embody pure romance and luxury.', color: 'var(--color-accent)', img: `${basePath}/assets/category_wedding.png` },
               { id: 'everyday', title: 'Just Because', desc: 'Because you never need an excuse to indulge in the finest cakes in Lagos.', color: 'var(--color-secondary)', img: `${basePath}/assets/category_anniversary.png` }
             ].map((cat, i) => (
-              <div key={cat.id} className="fun-card" style={{ padding: '2rem', textAlign: 'center' }}>
-                <motion.div whileHover={{ scale: 1.05, rotate: 5 }} style={{ width: '200px', height: '200px', margin: '0 auto 1.5rem', borderRadius: '50%', border: `6px solid ${cat.color}`, overflow: 'hidden' }}>
+              <div key={cat.id} className="fun-card" style={{ padding: 'clamp(1.5rem, 4vw, 2rem)', textAlign: 'center' }}>
+                <motion.div whileHover={{ scale: 1.05, rotate: 5 }} style={{ width: 'clamp(150px, 40vw, 200px)', height: 'clamp(150px, 40vw, 200px)', margin: '0 auto 1.5rem', borderRadius: '50%', border: `6px solid ${cat.color}`, overflow: 'hidden' }}>
                   <img src={cat.img} alt={cat.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </motion.div>
-                <h3 style={{ fontSize: '2.2rem', color: cat.color }}>{cat.title}</h3>
-                <p style={{ color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '1.5rem' }}>{cat.desc}</p>
-                <a href="#quote" className="btn" style={{ background: cat.color, color: 'white', width: '100%' }}>Commission This</a>
+                <h3 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.2rem)', color: cat.color, margin: '0 0 1rem 0' }}>{cat.title}</h3>
+                <p style={{ color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '1.5rem', fontSize: 'clamp(0.95rem, 3vw, 1rem)' }}>{cat.desc}</p>
+                <a href="#quote" className="btn" style={{ background: cat.color, color: 'white', width: '100%', padding: '1rem', fontSize: 'clamp(1rem, 3vw, 1.1rem)' }}>Commission This</a>
               </div>
             ))}
           </div>
@@ -185,11 +222,11 @@ export default function Home() {
       {/* Gallery Section */}
       <section id="gallery" className="py-section" style={{ background: 'var(--color-bg-alt)' }}>
         <div className="container">
-           <div className="text-center" style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h2 style={{ fontSize: '3.5rem', color: 'var(--color-text-main)' }}>Our Masterpieces</h2>
-            <p style={{ fontSize: '1.2rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>A closer look at the exceptional quality we deliver every day.</p>
+           <div className="text-center" style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 4rem)' }}>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 3.5rem)', color: 'var(--color-text-main)', margin: '0 0 1rem 0' }}>Our Masterpieces</h2>
+            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>A closer look at the exceptional quality we deliver every day.</p>
           </div>
-          <div style={{ columnCount: 3, columnGap: '1.5rem' }}>
+          <div style={{ columnCount: 'auto', columnWidth: '250px', columnGap: '1.5rem' }}>
             {[
               `${basePath}/assets/hero_cake.png`, `${basePath}/assets/category_wedding.png`, `${basePath}/assets/category_birthday.png`, 
               `${basePath}/assets/category_anniversary.png`, `${basePath}/assets/hero_cake.png`, `${basePath}/assets/category_wedding.png`
@@ -205,20 +242,20 @@ export default function Home() {
       {/* Quote Form Section */}
       <section id="quote" className="py-section" style={{ background: 'var(--color-bg)' }}>
         <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <h2 style={{ fontSize: '4rem', color: 'var(--color-text-main)' }}>Let's Create Magic</h2>
-            <p style={{ fontSize: '1.2rem', color: 'var(--color-text-muted)', fontWeight: 600, maxWidth: '600px', margin: '0 auto' }}>Submit your details below and we will connect with you immediately via WhatsApp to finalize your order.</p>
+          <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)', color: 'var(--color-text-main)', margin: '0 0 1rem 0' }}>Let's Create Magic</h2>
+            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600, maxWidth: '600px', margin: '0 auto' }}>Submit your details below and we will connect with you immediately via WhatsApp to finalize your order.</p>
           </div>
 
-          <div className="fun-card" style={{ maxWidth: '800px', margin: '0 auto', padding: '3rem', position: 'relative' }}>
+          <div className="fun-card" style={{ maxWidth: '800px', margin: '0 auto', padding: 'clamp(1.5rem, 5vw, 3rem)', position: 'relative' }}>
             <AnimatePresence>
               {isSuccess ? (
                 <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: 'center', padding: '3rem 1rem' }}>
                   <motion.div animate={{ rotate: [0, -10, 10, -10, 10, 0] }} transition={{ duration: 1 }} style={{ color: 'var(--color-secondary)', marginBottom: '1.5rem', display: 'inline-block' }}>
                     <CheckCircle size={100} fill="var(--color-primary)" color="white" />
                   </motion.div>
-                  <h3 style={{ fontSize: '3rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>Details Received</h3>
-                  <p style={{ fontSize: '1.2rem', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '2rem' }}>Redirecting you to WhatsApp to connect with our team...</p>
+                  <h3 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', color: 'var(--color-primary)', marginBottom: '1rem' }}>Details Received</h3>
+                  <p style={{ fontSize: 'clamp(1rem, 3.5vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '2rem' }}>Redirecting you to WhatsApp to connect with our team...</p>
                   <button onClick={() => setIsSuccess(false)} className="btn btn-secondary">Commission Another Cake</button>
                 </motion.div>
               ) : (
@@ -229,17 +266,17 @@ export default function Home() {
                     </div>
                   )}
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                     <div><label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>First Name</label><input name="firstName" className="form-control" required /></div>
                     <div><label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Last Name</label><input name="lastName" className="form-control" required /></div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                     <div><label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>WhatsApp Number</label><input name="phone" type="tel" className="form-control" required /></div>
                     <div><label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Email Address</label><input name="email" type="email" className="form-control" /></div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                     <div>
                       <label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Event Type</label>
                       <select name="eventType" className="form-control" required>
@@ -259,7 +296,7 @@ export default function Home() {
                     <textarea name="vision" className="form-control" rows="4" placeholder="Colors, flavors, sizing, and design preferences..." required></textarea>
                   </div>
 
-                  <button type="submit" className="btn btn-primary" style={{ width: '100%', fontSize: '1.3rem', padding: '1.5rem' }}>CONNECT VIA WHATSAPP</button>
+                  <button type="submit" className="btn btn-primary" style={{ width: '100%', fontSize: 'clamp(1.1rem, 4vw, 1.3rem)', padding: 'clamp(1.2rem, 4vw, 1.5rem)' }}>CONNECT VIA WHATSAPP</button>
                 </motion.form>
               )}
             </AnimatePresence>
@@ -270,20 +307,20 @@ export default function Home() {
       {/* General Inquiry Section */}
       <section id="contact" className="py-section" style={{ background: 'white' }}>
         <div className="container" style={{ maxWidth: '600px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <h2 style={{ fontSize: '3rem', color: 'var(--color-primary)' }}>General Inquiries</h2>
-            <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Not quite ready to order? Reach out with any general questions and our team will be happy to assist.</p>
+          <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>General Inquiries</h2>
+            <p style={{ fontSize: 'clamp(0.95rem, 3.5vw, 1.1rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>Not quite ready to order? Reach out with any general questions and our team will be happy to assist.</p>
           </div>
 
-          <div className="fun-card" style={{ padding: '2.5rem', position: 'relative' }}>
+          <div className="fun-card" style={{ padding: 'clamp(1.5rem, 5vw, 2.5rem)', position: 'relative' }}>
              <AnimatePresence>
               {isInquirySuccess ? (
                  <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: 'center', padding: '2rem 1rem' }}>
                   <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 0.5 }} style={{ color: 'var(--color-secondary)', marginBottom: '1rem', display: 'inline-block' }}>
                     <CheckCircle size={80} fill="var(--color-primary)" color="white" />
                   </motion.div>
-                  <h3 style={{ fontSize: '2rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>Redirecting...</h3>
-                  <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '2rem' }}>Opening WhatsApp to send your inquiry.</p>
+                  <h3 style={{ fontSize: 'clamp(1.8rem, 5vw, 2rem)', color: 'var(--color-primary)', marginBottom: '1rem' }}>Redirecting...</h3>
+                  <p style={{ fontSize: 'clamp(1rem, 3.5vw, 1.1rem)', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '2rem' }}>Opening WhatsApp to send your inquiry.</p>
                   <button onClick={() => setIsInquirySuccess(false)} className="btn btn-secondary">Send Another Message</button>
                 </motion.div>
               ) : (
@@ -303,7 +340,7 @@ export default function Home() {
                     <textarea name="message" className="form-control" rows="4" required placeholder="How can we help you today?"></textarea>
                   </div>
                   
-                  <button type="submit" className="btn btn-secondary" style={{ width: '100%', fontSize: '1.2rem', padding: '1.2rem' }}>SEND TO WHATSAPP</button>
+                  <button type="submit" className="btn btn-secondary" style={{ width: '100%', fontSize: 'clamp(1rem, 4vw, 1.2rem)', padding: 'clamp(1rem, 4vw, 1.2rem)' }}>SEND TO WHATSAPP</button>
                 </motion.form>
               )}
              </AnimatePresence>
@@ -311,10 +348,10 @@ export default function Home() {
              <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '2px dashed var(--color-border)', textAlign: 'center' }}>
                <p style={{ fontWeight: 700, color: 'var(--color-text-main)', marginBottom: '1rem' }}>Or contact us directly:</p>
                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-                 <a href="mailto:xtrafreshcakes@gmail.com" className="btn" style={{ background: 'var(--color-bg)', border: '2px solid var(--color-border)', color: 'var(--color-text-main)', padding: '0.8rem 1.5rem', borderRadius: '20px' }}>
+                 <a href="mailto:xtrafreshcakes@gmail.com" className="btn" style={{ background: 'var(--color-bg)', border: '2px solid var(--color-border)', color: 'var(--color-text-main)', padding: '0.8rem 1.5rem', borderRadius: '20px', fontSize: 'clamp(0.9rem, 3vw, 1rem)' }}>
                    xtrafreshcakes@gmail.com
                  </a>
-                 <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: 'var(--color-bg)', border: '2px solid var(--color-border)', color: 'var(--color-text-main)', padding: '0.8rem 1.5rem', borderRadius: '20px' }}>
+                 <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: 'var(--color-bg)', border: '2px solid var(--color-border)', color: 'var(--color-text-main)', padding: '0.8rem 1.5rem', borderRadius: '20px', fontSize: 'clamp(0.9rem, 3vw, 1rem)' }}>
                    WhatsApp: 08021342856
                  </a>
                </div>
