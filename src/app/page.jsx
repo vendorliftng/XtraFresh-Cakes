@@ -1,23 +1,13 @@
 "use client";
 
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { Loader2, CheckCircle, Mail, MessageCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { Loader2, CheckCircle, Mail, MessageCircle, Heart, Star, Sparkles } from 'lucide-react';
 
 export default function Home() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, 300]);
-
   // Form State
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-
-  // General Inquiry State
   const [isInquirySubmitting, setIsInquirySubmitting] = useState(false);
   const [isInquirySuccess, setIsInquirySuccess] = useState(false);
 
@@ -32,29 +22,25 @@ export default function Home() {
 
     try {
       const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_URL;
-      
       if (scriptUrl) {
-        const response = await fetch(scriptUrl, {
+        await fetch(scriptUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
-          mode: 'no-cors' // Required for direct Apps Script fetches
+          mode: 'no-cors'
         });
       } else {
-        // Fallback for dev mode
         await new Promise(resolve => setTimeout(resolve, 1500));
       }
       
-      // Since no-cors hides the response status, we assume success if no error was thrown
       setIsSuccess(true);
       e.target.reset();
       
-      // WhatsApp Redirect
-      const whatsappMsg = `Hi Xtra Fresh Cakes! I'd like to commission a cake.\n\nName: ${data.firstName} ${data.lastName}\nEvent: ${data.eventType} on ${data.eventDate}\nZone: ${data.deliveryZone}\nGuests: ${data.guestCount}\nDetails: ${data.vision}`;
+      const whatsappMsg = `Hi Xtra Fresh Cakes! 🎂 I'd like to order a cake!\n\nName: ${data.firstName} ${data.lastName}\nEvent: ${data.eventType} on ${data.eventDate}\nZone: ${data.deliveryZone}\nGuests: ${data.guestCount}\nDetails: ${data.vision}`;
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
       window.open(whatsappUrl, '_blank');
     } catch (error) {
-      console.error('Failed to submit quote:', error);
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -63,22 +49,17 @@ export default function Home() {
   const handleInquirySubmit = async (e) => {
     e.preventDefault();
     setIsInquirySubmitting(true);
-    
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
     try {
-      // Simulate backend submission for inquiry (can wire to same API later)
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
       setIsInquirySuccess(true);
       e.target.reset();
       
-      // WhatsApp Redirect
-      const whatsappMsg = `Hi Xtra Fresh Cakes! General Inquiry from ${data.name}:\n\n${data.message}`;
+      const whatsappMsg = `Hi Xtra Fresh Cakes! 🌟 Question from ${data.name}:\n\n${data.message}`;
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
       window.open(whatsappUrl, '_blank');
-      
     } catch (error) {
       console.error(error);
     } finally {
@@ -86,143 +67,113 @@ export default function Home() {
     }
   }
 
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } }
+  const bounceAnimation = {
+    y: {
+      duration: 2,
+      repeat: Infinity,
+      repeatType: "reverse",
+      ease: "easeInOut"
+    }
   };
-
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 1, 0.5, 1] } }
-  };
-
-  const categories = [
-    { id: 'wedding', title: 'Luxury Weddings', desc: 'Grand, multi-tiered masterpieces for your special day.', price: 'Starts ₦150,000', img: '/assets/category_wedding.png' },
-    { id: 'birthday', title: 'Elegant Birthdays', desc: 'Celebrate another year with sophistication and style.', price: 'Starts ₦45,000', img: '/assets/category_birthday.png' },
-    { id: 'corporate', title: 'Corporate & VIP', desc: 'Premium branded cakes that reflect your company\'s excellence.', price: 'Custom Quote', img: '/assets/category_anniversary.png' },
-    { id: 'engagement', title: 'Traditional Marriage', desc: 'Exquisite cultural designs to honor your rich heritage.', price: 'Starts ₦80,000', img: '/assets/category_wedding.png' },
-    { id: 'kids', title: 'Children\'s Couture', desc: 'Whimsical yet elegant designs for unforgettable kids\' parties.', price: 'Starts ₦55,000', img: '/assets/category_birthday.png' },
-    { id: 'everyday', title: 'Everyday Indulgence', desc: 'Because luxury should be enjoyed every single day.', price: 'Starts ₦20,000', img: '/assets/category_anniversary.png' }
-  ];
-
-  const galleryImages = [
-    '/assets/hero_cake.png', '/assets/category_wedding.png', '/assets/category_birthday.png', 
-    '/assets/category_anniversary.png', '/assets/hero_cake.png', '/assets/category_wedding.png'
-  ];
 
   return (
-    <div ref={containerRef} style={{ background: 'var(--color-bg)' }}>
-      {/* Hero Section */}
-      <section id="hero" style={{ position: 'relative', height: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden', paddingTop: '80px' }}>
-        <motion.div style={{ position: 'absolute', inset: 0, backgroundImage: 'url("/assets/hero_cake.png")', backgroundSize: 'cover', backgroundPosition: 'center', y: y1 }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(10, 10, 10, 0.75)' }} />
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '25%', background: 'linear-gradient(to top, var(--color-bg) 0%, transparent 100%)' }} />
+    <main>
+      {/* Super Fun Hero Section */}
+      <section style={{ minHeight: '100vh', paddingTop: '120px', paddingBottom: '4rem', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
         
-        <div className="container" style={{ position: 'relative', zIndex: 10 }}>
-          <motion.div variants={staggerContainer} initial="hidden" animate="show" style={{ maxWidth: '900px' }}>
-            <motion.div variants={fadeInUp} style={{ display: 'inline-block', background: 'var(--color-primary)', color: '#FFF', padding: '0.4rem 1rem', borderRadius: '30px', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
-              Lagos' Premier Cake Studio
-            </motion.div>
-            <motion.h1 variants={fadeInUp} style={{ fontSize: 'clamp(3.5rem, 9vw, 6.5rem)', lineHeight: 1, marginBottom: '2rem', letterSpacing: '-2px', color: '#FFF' }}>
-              SPECTACULAR <br/><span style={{ color: 'var(--color-primary)', fontStyle: 'italic', fontFamily: 'var(--font-heading)' }}>Centerpieces</span>
-            </motion.h1>
-            <motion.p variants={fadeInUp} style={{ fontSize: '1.3rem', color: '#E0E0E0', marginBottom: '3rem', maxWidth: '700px', lineHeight: 1.6, fontWeight: 500 }}>
-              Elevate your celebrations with uncompromised luxury. From exclusive Victoria Island galas to unforgettable Mainland weddings, we bake the most exquisite, show-stopping cakes in Lagos.
-            </motion.p>
-            <motion.div variants={fadeInUp} style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-              <a href="#collections" className="btn btn-primary" style={{ padding: '1.2rem 3rem', fontSize: '1.1rem', fontWeight: 600 }}>Explore Our Collection</a>
-              <a href="#quote" className="btn btn-outline" style={{ padding: '1.2rem 3rem', fontSize: '1.1rem', color: '#FFF', borderColor: '#FFF' }}>Commission A Cake</a>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+        {/* Colorful Blobs Background */}
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 50, repeat: Infinity, ease: "linear" }} className="blob-shape" style={{ position: 'absolute', top: '-10%', left: '-10%', width: '500px', height: '500px', background: 'var(--color-secondary)', opacity: 0.3, zIndex: -1 }} />
+        <motion.div animate={{ rotate: -360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} className="blob-shape" style={{ position: 'absolute', bottom: '-20%', right: '-5%', width: '600px', height: '600px', background: 'var(--color-primary)', opacity: 0.2, zIndex: -1 }} />
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="blob-shape" style={{ position: 'absolute', top: '20%', right: '15%', width: '300px', height: '300px', background: 'var(--color-accent)', opacity: 0.3, zIndex: -1 }} />
 
-      {/* Story Section */}
-      <section id="story" className="py-section" style={{ position: 'relative', background: 'var(--color-bg)' }}>
         <div className="container">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem', alignItems: 'center' }}>
-            <div>
-              <motion.h2 variants={fadeInUp} style={{ fontSize: '3.5rem', marginBottom: '2rem', color: 'var(--color-primary)', lineHeight: 1.1 }}>A TASTE OF <br/>TRUE LUXURY</motion.h2>
-              <motion.p variants={fadeInUp} style={{ color: 'var(--color-text-main)', marginBottom: '1.5rem', fontSize: '1.2rem', fontWeight: 500 }}>
-                At Xtra Fresh Cakes, we don't just bake; we craft edible masterpieces tailored to your highest standards.
-              </motion.p>
-              <motion.p variants={fadeInUp} style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>
-                Whether it's a towering wedding cake or an elegant anniversary design, we blend premium ingredients with meticulous artistry to leave a lasting impression on your guests.
-              </motion.p>
-            </div>
-            <motion.div variants={fadeInUp} className="glass" style={{ padding: '4rem', borderRadius: 'var(--border-radius)', position: 'relative', border: '1px solid var(--color-primary)' }}>
-              <div style={{ position: 'absolute', top: '-30px', left: '-10px', fontSize: '6rem', color: 'var(--color-primary)', opacity: 0.2, lineHeight: 1 }}>"</div>
-              <p style={{ fontSize: '1.6rem', fontStyle: 'italic', lineHeight: 1.5, marginBottom: '2rem', color: 'var(--color-text-main)' }}>
-                Absolutely breathtaking. The design was flawless and the taste was unparalleled. The highlight of our Lagos wedding.
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', alignItems: 'center' }}>
+            <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, type: 'spring' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'white', border: '3px solid var(--color-border)', padding: '0.5rem 1.2rem', borderRadius: '50px', fontWeight: 800, color: 'var(--color-primary)', marginBottom: '1.5rem' }}>
+                <Sparkles size={20} /> LAGOS' HAPPIEST CAKES!
+              </div>
+              <h1 style={{ fontSize: 'clamp(3.5rem, 8vw, 6rem)', lineHeight: 1.1, color: 'var(--color-text-main)', marginBottom: '1.5rem' }}>
+                Baking <span style={{ color: 'var(--color-primary)', display: 'inline-block', position: 'relative' }}>Smiles<svg style={{ position: 'absolute', bottom: '-10px', left: 0, width: '100%', height: '20px' }} viewBox="0 0 100 20"><path d="M0 10 Q 50 20 100 10" stroke="var(--color-secondary)" strokeWidth="6" fill="transparent"/></svg></span><br/>Every Single Day.
+              </h1>
+              <p style={{ fontSize: '1.3rem', color: 'var(--color-text-muted)', marginBottom: '2.5rem', fontWeight: 600, maxWidth: '500px' }}>
+                From spectacular birthday bashes to everyday treats, we bake the most colorful, delicious, and fun cakes in all of Lagos!
               </p>
-              <p style={{ color: 'var(--color-secondary)', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', fontSize: '1rem' }}>— Grace O., Ikoyi</p>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* The Founder's Story Section */}
-      <section id="founder" className="py-section" style={{ background: 'var(--color-bg-alt)' }}>
-        <div className="container">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem', alignItems: 'center' }}>
-            <motion.div variants={fadeInUp} style={{ order: 2 }}>
-              <motion.p variants={fadeInUp} style={{ color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '3px', fontSize: '1rem', fontWeight: 700, marginBottom: '1rem' }}>The Visionary</motion.p>
-              <motion.h2 variants={fadeInUp} style={{ fontSize: '3.5rem', marginBottom: '2rem', color: 'var(--color-text-main)', lineHeight: 1.1 }}>Olaide Balikis <br/>Abdullateef</motion.h2>
-              <motion.p variants={fadeInUp} style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem', fontSize: '1.1rem', lineHeight: 1.8 }}>
-                Her cake journey started in 1993, learning the fine art of confectionery. What began as baking for family and friends blossomed into a lifelong passion for making people happy with her hands.
-              </motion.p>
-              <motion.p variants={fadeInUp} style={{ color: 'var(--color-text-muted)', marginBottom: '2rem', fontSize: '1.1rem', lineHeight: 1.8 }}>
-                Today, she runs a thriving bakery serving both bespoke luxury clients and bulk buyers. Yet, her core philosophy remains beautifully simple: <strong style={{ color: 'var(--color-text-main)' }}>Every day should be a happy day.</strong> You do not need a special occasion to treat yourself to a slice of joy.
-              </motion.p>
-            </motion.div>
-            <motion.div variants={fadeInUp} style={{ order: 1, position: 'relative', height: '600px', borderRadius: 'var(--border-radius)', overflow: 'hidden' }}>
-              <img src="/assets/hero_cake.png" alt="Founder" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%)' }} />
-              <div style={{ position: 'absolute', bottom: '30px', left: '30px', color: '#FFF' }}>
-                <p style={{ fontSize: '1.2rem', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase' }}>Since 1993</p>
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <a href="#collections" className="btn btn-primary" style={{ fontSize: '1.2rem', padding: '1.2rem 2.5rem' }}>See The Cakes!</a>
+                <a href="#quote" className="btn btn-secondary" style={{ fontSize: '1.2rem', padding: '1.2rem 2.5rem' }}>Order Yours</a>
               </div>
             </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Portfolio/Categories Section */}
-      <section id="collections" className="py-section" style={{ background: 'var(--color-bg)' }}>
-        <div className="container">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={staggerContainer} className="text-center" style={{ marginBottom: '5rem' }}>
-            <motion.p variants={fadeInUp} style={{ color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '3px', fontSize: '1rem', fontWeight: 700, marginBottom: '1rem' }}>The Portfolio</motion.p>
-            <motion.h2 variants={fadeInUp} style={{ fontSize: '4.5rem', color: 'var(--color-text-main)', textTransform: 'uppercase', letterSpacing: '-1px' }}>Masterpieces For<br/>Every Occasion</motion.h2>
-          </motion.div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
-            {categories.map((cat, i) => (
-              <motion.div key={cat.id} initial={{ opacity: 0, scale: 0.95, y: 30 }} whileInView={{ opacity: 1, scale: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.5, delay: (i % 3) * 0.15 }} className="glass" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ position: 'relative', height: '250px', overflow: 'hidden' }}>
-                  <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 0.4, y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 } }} style={{ width: '100%', height: '100%', backgroundImage: `url(${cat.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-                  <div style={{ position: 'absolute', bottom: '15px', right: '15px', background: 'var(--color-primary)', color: '#FFF', padding: '0.4rem 1rem', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 700, boxShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>{cat.price}</div>
-                </div>
-                <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <h3 style={{ fontSize: '1.6rem', marginBottom: '0.5rem', color: 'var(--color-primary)' }}>{cat.title}</h3>
-                  <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem', flex: 1 }}>{cat.desc}</p>
-                  <a href="#quote" className="btn btn-outline" style={{ width: '100%', borderColor: 'var(--color-border)' }}>Order Now</a>
-                </div>
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }} 
+              animate={{ opacity: 1, scale: 1 }} 
+              transition={{ duration: 0.8, type: 'spring' }}
+              style={{ position: 'relative', height: '600px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              {/* Fun Hero Image Wrapper */}
+              <motion.div animate={{ y: [-15, 15] }} transition={bounceAnimation} style={{ position: 'relative', zIndex: 10 }}>
+                 <img src="/assets/hero_cake.png" alt="Delicious Fun Cake" style={{ width: '100%', maxWidth: '450px', borderRadius: '40px', border: '10px solid white', boxShadow: '0 20px 50px rgba(255, 51, 102, 0.2)', transform: 'rotate(3deg)' }} />
               </motion.div>
-            ))}
+              
+              {/* Floating Embellishments */}
+              <motion.div animate={{ y: [-10, 10], rotate: [0, 10, 0] }} transition={{ ...bounceAnimation, delay: 0.5 }} style={{ position: 'absolute', top: '10%', right: '10%', background: 'white', padding: '1rem', borderRadius: '50%', boxShadow: '0 10px 20px rgba(0,0,0,0.1)', zIndex: 20 }}>
+                <Star color="var(--color-secondary)" fill="var(--color-secondary)" size={40} />
+              </motion.div>
+              <motion.div animate={{ y: [10, -10], rotate: [0, -10, 0] }} transition={{ ...bounceAnimation, delay: 1 }} style={{ position: 'absolute', bottom: '20%', left: '0%', background: 'white', padding: '1rem', borderRadius: '50%', boxShadow: '0 10px 20px rgba(0,0,0,0.1)', zIndex: 20 }}>
+                <Heart color="var(--color-primary)" fill="var(--color-primary)" size={40} />
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Masterpiece Gallery */}
-      <section id="gallery" className="py-section" style={{ background: 'var(--color-bg-alt)' }}>
+      {/* The Visionary Section */}
+      <section id="founder" className="py-section" style={{ background: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '-50px', left: 0, right: 0, height: '100px', background: 'var(--color-bg)', borderRadius: '0 0 50% 50%' }}></div>
+        <div className="container" style={{ position: 'relative', zIndex: 10, marginTop: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
+            <div style={{ order: 2 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.2)', padding: '0.5rem 1.2rem', borderRadius: '50px', fontWeight: 800, marginBottom: '1.5rem' }}>
+                👑 MEET THE BAKER
+              </div>
+              <h2 style={{ fontSize: '3.5rem', color: 'white', marginBottom: '1.5rem' }}>Olaide Balikis Abdullateef</h2>
+              <p style={{ fontSize: '1.2rem', marginBottom: '1.5rem', fontWeight: 600, lineHeight: 1.8 }}>
+                Her cake journey started all the way back in 1993. What began as baking sweet treats for family and friends blossomed into a lifelong passion for making people happy with her own hands!
+              </p>
+              <p style={{ fontSize: '1.2rem', marginBottom: '2rem', fontWeight: 600, lineHeight: 1.8 }}>
+                Today, she runs a thriving bakery. But her core philosophy remains beautifully simple: <span style={{ color: 'var(--color-secondary)', fontWeight: 800 }}>Every day should be a happy day.</span> You do not need a special occasion to treat yourself to a slice of joy!
+              </p>
+            </div>
+            <div style={{ order: 1 }}>
+              <img src="/assets/hero_cake.png" alt="Founder Olaide Balikis Abdullateef" loading="lazy" style={{ width: '100%', borderRadius: '40px', border: '8px solid white', transform: 'rotate(-3deg)' }} />
+            </div>
+          </div>
+        </div>
+        <div style={{ position: 'absolute', bottom: '-50px', left: 0, right: 0, height: '100px', background: 'white', borderRadius: '50% 50% 0 0' }}></div>
+      </section>
+
+      {/* Colorful Collections Section */}
+      <section id="collections" className="py-section" style={{ background: 'white' }}>
         <div className="container">
-           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={staggerContainer} className="text-center" style={{ marginBottom: '4rem' }}>
-            <motion.h2 variants={fadeInUp} style={{ fontSize: '3.5rem', color: 'var(--color-text-main)', textTransform: 'uppercase' }}>Gallery of Dreams</motion.h2>
-          </motion.div>
-          <div style={{ columnCount: 3, columnGap: '1.5rem' }}>
-            {galleryImages.map((src, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} style={{ breakInside: 'avoid', marginBottom: '1.5rem', borderRadius: 'var(--border-radius)', overflow: 'hidden' }}>
-                <img src={src} alt="Cake Masterpiece" style={{ width: '100%', display: 'block', borderRadius: 'var(--border-radius)' }} />
-              </motion.div>
+          <div className="text-center" style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <h2 style={{ fontSize: '4rem', color: 'var(--color-primary)' }}>Pick Your Flavor!</h2>
+            <p style={{ fontSize: '1.2rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>We have something magical for every single occasion.</p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2.5rem' }}>
+            {[
+              { id: 'birthday', title: 'Epic Birthdays', desc: 'Bright, loud, and totally unforgettable birthday cakes!', color: 'var(--color-primary)', img: '/assets/category_birthday.png' },
+              { id: 'wedding', title: 'Dreamy Weddings', desc: 'Beautiful, towering tiers of pure love and sweetness.', color: 'var(--color-accent)', img: '/assets/category_wedding.png' },
+              { id: 'everyday', title: 'Just Because', desc: 'Treat yourself! You deserve a slice of happiness today.', color: 'var(--color-secondary)', img: '/assets/category_anniversary.png' }
+            ].map((cat, i) => (
+              <div key={cat.id} className="fun-card" style={{ padding: '2rem', textAlign: 'center' }}>
+                <motion.div whileHover={{ scale: 1.05, rotate: 5 }} style={{ width: '200px', height: '200px', margin: '0 auto 1.5rem', borderRadius: '50%', border: `6px solid ${cat.color}`, overflow: 'hidden' }}>
+                  <img src={cat.img} alt={cat.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </motion.div>
+                <h3 style={{ fontSize: '2rem', color: cat.color }}>{cat.title}</h3>
+                <p style={{ color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '1.5rem' }}>{cat.desc}</p>
+                <a href="#quote" className="btn" style={{ background: cat.color, color: 'white', width: '100%' }}>I Want This!</a>
+              </div>
             ))}
           </div>
         </div>
@@ -231,148 +182,66 @@ export default function Home() {
       {/* Quote Form Section */}
       <section id="quote" className="py-section" style={{ background: 'var(--color-bg)' }}>
         <div className="container">
-          <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={staggerContainer} className="text-center" style={{ marginBottom: '3rem' }}>
-            <motion.h2 variants={fadeInUp} style={{ fontSize: '4rem', color: 'var(--color-secondary)', textTransform: 'uppercase' }}>COMMISSION YOUR CAKE</motion.h2>
-            <motion.p variants={fadeInUp} style={{ fontSize: '1.2rem', color: 'var(--color-text-muted)', maxWidth: '600px', margin: '0 auto' }}>
-              Share your vision with us below. We'll capture your details, and redirect you instantly to WhatsApp to chat with the team.
-            </motion.p>
-          </motion.div>
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <h2 style={{ fontSize: '4rem', color: 'var(--color-text-main)' }}>Let's Bake Magic! ✨</h2>
+            <p style={{ fontSize: '1.2rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Fill out the fun form below and we'll chat on WhatsApp instantly.</p>
+          </div>
 
-          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="glass" style={{ maxWidth: '800px', margin: '0 auto', padding: '3rem', borderRadius: 'var(--border-radius)', overflow: 'hidden', position: 'relative', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
+          <div className="fun-card" style={{ maxWidth: '800px', margin: '0 auto', padding: '3rem', position: 'relative' }}>
             <AnimatePresence>
               {isSuccess ? (
-                <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '4rem 2rem' }}>
-                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', delay: 0.2 }} style={{ color: 'var(--color-primary)', marginBottom: '1.5rem' }}><CheckCircle size={80} strokeWidth={1.5} /></motion.div>
-                  <h3 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: 'var(--color-text-main)' }}>Opening WhatsApp...</h3>
-                  <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', marginBottom: '2rem' }}>Your quote details have been saved. If WhatsApp didn't open automatically, click below.</p>
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ padding: '1rem 3rem' }}>Open WhatsApp</a>
+                <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: 'center', padding: '3rem 1rem' }}>
+                  <motion.div animate={{ rotate: [0, -10, 10, -10, 10, 0] }} transition={{ duration: 1 }} style={{ color: 'var(--color-secondary)', marginBottom: '1.5rem', display: 'inline-block' }}>
+                    <CheckCircle size={100} fill="var(--color-primary)" color="white" />
+                  </motion.div>
+                  <h3 style={{ fontSize: '3rem', color: 'var(--color-primary)', marginBottom: '1rem' }}>Woohoo! Captured!</h3>
+                  <p style={{ fontSize: '1.2rem', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '2rem' }}>Redirecting you to WhatsApp to finish the magic...</p>
+                  <button onClick={() => setIsSuccess(false)} className="btn btn-secondary">Order Another One</button>
                 </motion.div>
               ) : (
-                <motion.form onSubmit={handleFormSubmit} initial={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '2rem', position: 'relative' }}>
+                <motion.form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                   {isSubmitting && (
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(4px)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--border-radius)' }}>
-                      <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}><Loader2 size={40} color="var(--color-primary)" /></motion.div>
+                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.8)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '16px' }}>
+                      <Loader2 size={60} color="var(--color-primary)" className="animate-spin" />
                     </div>
                   )}
 
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
-                    <div><label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>First Name *</label><input name="firstName" type="text" className="form-control" required /></div>
-                    <div><label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Last Name *</label><input name="lastName" type="text" className="form-control" required /></div>
+                    <div><label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>First Name 🥳</label><input name="firstName" className="form-control" required /></div>
+                    <div><label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Last Name</label><input name="lastName" className="form-control" required /></div>
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
-                    <div><label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Phone / WhatsApp *</label><input name="phone" type="tel" className="form-control" required /></div>
-                    <div><label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Email Address</label><input name="email" type="email" className="form-control" /></div>
-                  </div>
-
-                  <hr style={{ border: 0, borderTop: '1px solid var(--color-border)', margin: '1rem 0' }} />
-
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
-                    <div>
-                      <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Event Type *</label>
-                      <select name="eventType" className="form-control" required style={{ appearance: 'none' }}>
-                        <option value="">Select an occasion...</option>
-                        <option value="wedding">Luxury Wedding</option>
-                        <option value="birthday">Elegant Birthday</option>
-                        <option value="corporate">Corporate Gala</option>
-                        <option value="engagement">Traditional Marriage</option>
-                        <option value="kids">Children's Couture</option>
-                        <option value="everyday">Everyday Indulgence</option>
-                      </select>
-                    </div>
-                    <div><label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Event Date *</label><input name="eventDate" type="date" className="form-control" required /></div>
+                    <div><label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>WhatsApp Number 📱</label><input name="phone" type="tel" className="form-control" required /></div>
+                    <div><label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Email Address 📧</label><input name="email" type="email" className="form-control" /></div>
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
                     <div>
-                      <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Delivery Zone *</label>
-                      <select name="deliveryZone" className="form-control" required style={{ appearance: 'none' }}>
-                        <option value="">Select area...</option>
-                        <option value="island">Island (Lekki, VI, Ikoyi)</option>
-                        <option value="mainland">Mainland Hubs</option>
-                        <option value="pickup">I will Pick Up</option>
+                      <label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>What are we celebrating? 🎊</label>
+                      <select name="eventType" className="form-control" required>
+                        <option value="">Pick a party...</option>
+                        <option value="birthday">Epic Birthday</option>
+                        <option value="wedding">Dreamy Wedding</option>
+                        <option value="anniversary">Sweet Anniversary</option>
+                        <option value="everyday">Just Because I Want Cake!</option>
                       </select>
                     </div>
-                    <div>
-                      <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Guest Count *</label>
-                      <select name="guestCount" className="form-control" required style={{ appearance: 'none' }}>
-                        <option value="">Select servings...</option>
-                        <option value="small">Intimate (10-25)</option>
-                        <option value="medium">Standard (30-60)</option>
-                        <option value="large">Large (70-150)</option>
-                        <option value="huge">Massive (150+)</option>
-                      </select>
-                    </div>
+                    <div><label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Date of the Party 🗓️</label><input name="eventDate" type="date" className="form-control" required /></div>
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Design Vision & Flavors</label>
-                    <textarea name="vision" className="form-control" rows="5" placeholder="Go wild! Tell us your theme, colors, and the flavor you want to taste..."></textarea>
+                    <label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Tell us your wildest cake dreams! 💭</label>
+                    <textarea name="vision" className="form-control" rows="4" placeholder="Colors, flavors, themes... go crazy!" required></textarea>
                   </div>
 
-                  <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-                    <motion.button disabled={isSubmitting} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} type="submit" className="btn btn-primary" style={{ width: '100%', maxWidth: '400px', padding: '1.2rem', fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 800, opacity: isSubmitting ? 0.7 : 1 }}>
-                      {isSubmitting ? 'Baking your quote...' : 'Request Quote Now!'}
-                    </motion.button>
-                  </div>
+                  <button type="submit" className="btn btn-primary" style={{ width: '100%', fontSize: '1.3rem', padding: '1.5rem' }}>SEND TO WHATSAPP 🚀</button>
                 </motion.form>
               )}
             </AnimatePresence>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* General Inquiry Section */}
-      <section id="contact" className="py-section" style={{ background: 'var(--color-bg-alt)' }}>
-        <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
-            <div>
-              <h2 style={{ fontSize: '3.5rem', marginBottom: '1.5rem', color: 'var(--color-text-main)', lineHeight: 1.1 }}>Have a <br/>General Question?</h2>
-              <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
-                Not ready for a custom quote yet? No problem. Reach out to our team for general inquiries. We aim to respond within 24 hours.
-              </p>
-              
-              <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
-                <a href="mailto:xtrafreshcakes@gmail.com,fataj001@gmail.com" className="glass" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.5rem', textDecoration: 'none', color: 'var(--color-text-main)', borderRadius: 'var(--border-radius)' }}>
-                  <Mail color="var(--color-primary)" />
-                  <div>
-                    <p style={{ fontWeight: 600, fontSize: '1.1rem' }}>Email Us</p>
-                    <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>xtrafreshcakes@gmail.com</p>
-                  </div>
-                </a>
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noreferrer" className="glass" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.5rem', textDecoration: 'none', color: 'var(--color-text-main)', borderRadius: 'var(--border-radius)' }}>
-                  <MessageCircle color="#25D366" />
-                  <div>
-                    <p style={{ fontWeight: 600, fontSize: '1.1rem' }}>WhatsApp Us</p>
-                    <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>+234 802 134 2856</p>
-                  </div>
-                </a>
-              </div>
-            </div>
-
-            <div className="glass" style={{ padding: '3rem', borderRadius: 'var(--border-radius)' }}>
-              <AnimatePresence>
-                {isInquirySuccess ? (
-                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '2rem' }}>
-                     <CheckCircle size={50} color="var(--color-primary)" style={{ margin: '0 auto 1rem' }} />
-                     <h3>Redirecting to WhatsApp...</h3>
-                   </motion.div>
-                ) : (
-                  <form onSubmit={handleInquirySubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    <h3>Send a Quick Message</h3>
-                    <div><input name="name" type="text" className="form-control" placeholder="Your Name" required /></div>
-                    <div><textarea name="message" className="form-control" rows="4" placeholder="How can we help you today?" required></textarea></div>
-                    <button type="submit" disabled={isInquirySubmitting} className="btn btn-primary" style={{ width: '100%', padding: '1rem', opacity: isInquirySubmitting ? 0.7 : 1 }}>
-                      {isInquirySubmitting ? 'Sending...' : 'Send Message'}
-                    </button>
-                  </form>
-                )}
-              </AnimatePresence>
-            </div>
           </div>
         </div>
       </section>
-
-    </div>
+    </main>
   );
 }
