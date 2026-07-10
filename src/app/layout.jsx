@@ -9,7 +9,7 @@ export const metadata = {
     description: "Lagos' most colorful and delicious cakes! We bake epic birthday cakes and dreamy wedding tiers.",
     url: "https://vendorliftng.github.io/XtraFresh-Cakes",
     siteName: "Xtra Fresh Cakes",
-    images: [{ url: "/assets/hero_cake.png" }],
+    images: [{ url: "https://vendorliftng.github.io/XtraFresh-Cakes/assets/hero_cake.png" }],
     type: "website",
   }
 };

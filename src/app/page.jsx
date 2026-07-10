@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { Loader2, CheckCircle, Mail, MessageCircle, Heart, Star, Sparkles } from 'lucide-react';
 
 export default function Home() {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
   // Form State
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -112,7 +114,7 @@ export default function Home() {
             >
               {/* Hero Image Wrapper */}
               <motion.div animate={{ y: [-15, 15] }} transition={bounceAnimation} style={{ position: 'relative', zIndex: 10 }}>
-                 <img src="/assets/hero_cake.png" alt="Delicious Masterpiece Cake" style={{ width: '100%', maxWidth: '450px', borderRadius: '40px', border: '10px solid white', boxShadow: '0 20px 50px rgba(255, 51, 102, 0.2)', transform: 'rotate(3deg)' }} />
+                 <img src={`${basePath}/assets/hero_cake.png`} alt="Delicious Masterpiece Cake" style={{ width: '100%', maxWidth: '450px', borderRadius: '40px', border: '10px solid white', boxShadow: '0 20px 50px rgba(255, 51, 102, 0.2)', transform: 'rotate(3deg)' }} />
               </motion.div>
             </motion.div>
           </div>
@@ -146,7 +148,7 @@ export default function Home() {
               </div>
             </div>
             <div style={{ order: 1 }}>
-              <img src="/assets/hero_cake.png" alt="Founder Olaide Balikis Abdullateef" loading="lazy" style={{ width: '100%', borderRadius: '40px', border: '8px solid white', transform: 'rotate(-3deg)' }} />
+              <img src={`${basePath}/assets/hero_cake.png`} alt="Founder Olaide Balikis Abdullateef" loading="lazy" style={{ width: '100%', borderRadius: '40px', border: '8px solid white', transform: 'rotate(-3deg)' }} />
             </div>
           </div>
         </div>
@@ -163,9 +165,9 @@ export default function Home() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2.5rem' }}>
             {[
-              { id: 'birthday', title: 'Epic Birthdays', desc: 'Unforgettable, towering centerpieces designed specifically to make your day extraordinary.', color: 'var(--color-primary)', img: '/assets/category_birthday.png' },
-              { id: 'wedding', title: 'Dreamy Weddings', desc: 'Elegant, multi-tiered masterpieces that embody pure romance and luxury.', color: 'var(--color-accent)', img: '/assets/category_wedding.png' },
-              { id: 'everyday', title: 'Just Because', desc: 'Because you never need an excuse to indulge in the finest cakes in Lagos.', color: 'var(--color-secondary)', img: '/assets/category_anniversary.png' }
+              { id: 'birthday', title: 'Epic Birthdays', desc: 'Unforgettable, towering centerpieces designed specifically to make your day extraordinary.', color: 'var(--color-primary)', img: `${basePath}/assets/category_birthday.png` },
+              { id: 'wedding', title: 'Dreamy Weddings', desc: 'Elegant, multi-tiered masterpieces that embody pure romance and luxury.', color: 'var(--color-accent)', img: `${basePath}/assets/category_wedding.png` },
+              { id: 'everyday', title: 'Just Because', desc: 'Because you never need an excuse to indulge in the finest cakes in Lagos.', color: 'var(--color-secondary)', img: `${basePath}/assets/category_anniversary.png` }
             ].map((cat, i) => (
               <div key={cat.id} className="fun-card" style={{ padding: '2rem', textAlign: 'center' }}>
                 <motion.div whileHover={{ scale: 1.05, rotate: 5 }} style={{ width: '200px', height: '200px', margin: '0 auto 1.5rem', borderRadius: '50%', border: `6px solid ${cat.color}`, overflow: 'hidden' }}>
@@ -189,8 +191,8 @@ export default function Home() {
           </div>
           <div style={{ columnCount: 3, columnGap: '1.5rem' }}>
             {[
-              '/assets/hero_cake.png', '/assets/category_wedding.png', '/assets/category_birthday.png', 
-              '/assets/category_anniversary.png', '/assets/hero_cake.png', '/assets/category_wedding.png'
+              `${basePath}/assets/hero_cake.png`, `${basePath}/assets/category_wedding.png`, `${basePath}/assets/category_birthday.png`, 
+              `${basePath}/assets/category_anniversary.png`, `${basePath}/assets/hero_cake.png`, `${basePath}/assets/category_wedding.png`
             ].map((src, i) => (
               <motion.div key={i} whileHover={{ scale: 1.02, rotate: i % 2 === 0 ? 2 : -2 }} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} style={{ breakInside: 'avoid', marginBottom: '1.5rem', borderRadius: 'var(--border-radius)', overflow: 'hidden', border: '4px solid var(--color-border)', boxShadow: '0 10px 20px rgba(0,0,0,0.05)' }}>
                 <img src={src} alt="Cake Masterpiece" loading="lazy" style={{ width: '100%', display: 'block', borderRadius: 'calc(var(--border-radius) - 4px)' }} />
