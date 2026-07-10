@@ -30,10 +30,18 @@ export default function RootLayout({ children }) {
       </nav>
         {children}
         <footer style={{ background: 'var(--color-primary)', color: 'white', padding: '4rem 0', textAlign: 'center' }}>
-          <div className="container">
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '3rem', color: '#FFF', marginBottom: '1rem' }}>XTRA FRESH CAKES</h2>
+          <div className="container" itemScope itemType="https://schema.org/Bakery">
+            <h2 itemProp="name" style={{ fontFamily: 'var(--font-heading)', fontSize: '3rem', color: '#FFF', marginBottom: '0.5rem' }}>XTRA FRESH CAKES</h2>
             <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>Every day should be a happy day.</p>
-            <p style={{ opacity: 0.8 }}>© {new Date().getFullYear()} Xtra Fresh Cakes. Lagos, Nigeria.</p>
+            
+            <div style={{ marginBottom: '2.5rem', fontSize: '1.1rem', fontWeight: 600, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <p itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                <span itemProp="streetAddress">73 Clem Rd</span>, <span itemProp="addressLocality">Ifako-Ijaiye</span>, <span itemProp="addressRegion">Lagos</span>
+              </p>
+              <p itemProp="telephone">+234 802 134 2856</p>
+            </div>
+
+            <p style={{ opacity: 0.8 }}>© {new Date().getFullYear()} Xtra Fresh Cakes. All rights reserved.</p>
           </div>
         </footer>
       </body>
