@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Loader2, CheckCircle, Sparkles } from 'lucide-react';
+import { Loader2, CheckCircle, Sparkles, MessageCircle, Phone, Heart, Star, Clock } from 'lucide-react';
 
 export default function Home() {
   const basePath = process.env.NODE_ENV === 'production' ? '/XtraFresh-Cakes' : '';
@@ -22,6 +22,21 @@ export default function Home() {
   }, []);
 
   const WHATSAPP_NUMBER = "2348021342856";
+  const CALL_NUMBER_1 = "2349060009541";
+
+  const CAKES = [
+    { id: 'vintage-heart', title: 'Vintage Heart Cake', price: '₦16,500', category: 'Buttercream Cakes', img: `${basePath}/assets/hero_cake.png` },
+    { id: 'legacy-alte', title: 'Legacy Alte Cake', price: '₦18,500', category: 'Buttercream Cakes', img: `${basePath}/assets/category_birthday.png` },
+    { id: 'flork-love', title: 'Flork Love Cake', price: '₦22,000', category: 'Buttercream Cakes', img: `${basePath}/assets/category_anniversary.png` },
+    { id: 'chocolate-drip', title: 'Luxury Chocolate Drip', price: '₦25,000', category: 'Chocolate Cakes', img: `${basePath}/assets/category_birthday.png` },
+    { id: 'crescent-double', title: 'Crescent Double-Layered', price: '₦35,000', category: 'Tiered Cakes', img: `${basePath}/assets/category_wedding.png` },
+    { id: 'wedding-tier', title: 'Classic Wedding Tier', price: '₦85,000', category: 'Wedding Cakes', img: `${basePath}/assets/category_wedding.png` },
+  ];
+
+  const handleOrderCake = (cake) => {
+    const text = `Hi Biliqis, I would like to order the ${cake.title} (${cake.price})!`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
+  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +61,7 @@ export default function Home() {
       setIsSuccess(true);
       e.target.reset();
       
-      const whatsappMsg = `Hello Xtra Fresh Cakes. I would like to commission a cake.\n\nName: ${data.firstName} ${data.lastName}\nEvent: ${data.eventType} on ${data.eventDate}\nZone: ${data.deliveryZone}\nGuests: ${data.guestCount}\nDetails: ${data.vision}`;
+      const whatsappMsg = `Hello Biliqis, I would like to commission a custom cake.\n\nName: ${data.firstName} ${data.lastName}\nEvent: ${data.eventType} on ${data.eventDate}\nWhatsApp: ${data.phone}\nDetails: ${data.vision}`;
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
       window.open(whatsappUrl, '_blank');
     } catch (error) {
@@ -67,7 +82,7 @@ export default function Home() {
       setIsInquirySuccess(true);
       e.target.reset();
       
-      const whatsappMsg = `Hello Xtra Fresh Cakes. I have a general inquiry.\n\nFrom: ${data.name}\n\nMessage:\n${data.message}`;
+      const whatsappMsg = `Hello Biliqis. I have a general inquiry.\n\nFrom: ${data.name}\n\nMessage:\n${data.message}`;
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
       window.open(whatsappUrl, '_blank');
     } catch (error) {
@@ -117,29 +132,47 @@ export default function Home() {
         )}
       </AnimatePresence>
 
+      {/* Floating Sticky Chat Widget */}
+      <div style={{ position: 'fixed', bottom: '2rem', right: 'clamp(1rem, 5vw, 2rem)', zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 20, scale: 0.8 }} 
+          animate={{ opacity: 1, y: 0, scale: 1 }} 
+          transition={{ delay: 3, type: 'spring' }} 
+          style={{ background: 'white', padding: '1rem', borderRadius: '20px 20px 0 20px', boxShadow: '0 10px 30px rgba(0,0,0,0.15)', maxWidth: '220px', border: '2px solid var(--color-border)', transformOrigin: 'bottom right' }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <div style={{ width: '30px', height: '30px', background: 'var(--color-primary)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white', fontWeight: 'bold', fontSize: '0.8rem' }}>B</div>
+            <span style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--color-text-main)' }}>Biliqis</span>
+          </div>
+          <p style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', margin: 0, lineHeight: 1.4 }}>Hi 👋, need help with your order? We reply very fast!</p>
+        </motion.div>
+        <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi Biliqis, I need some help choosing a cake!`} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: '#25D366', color: 'white', width: '65px', height: '65px', borderRadius: '50%', padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 10px 25px rgba(37,211,102,0.4)', border: 'none' }}>
+          <MessageCircle size={32} />
+        </a>
+      </div>
+
       {/* Hero Section */}
-      <section style={{ minHeight: '100vh', paddingTop: '120px', paddingBottom: '4rem', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+      <section style={{ minHeight: '90vh', paddingTop: '120px', paddingBottom: '4rem', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
         
         {/* Colorful Blobs Background */}
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 50, repeat: Infinity, ease: "linear" }} className="blob-shape" style={{ position: 'absolute', top: '-10%', left: '-10%', width: '500px', height: '500px', background: 'var(--color-secondary)', opacity: 0.3, zIndex: -1 }} />
         <motion.div animate={{ rotate: -360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} className="blob-shape" style={{ position: 'absolute', bottom: '-20%', right: '-5%', width: '600px', height: '600px', background: 'var(--color-primary)', opacity: 0.2, zIndex: -1 }} />
-        <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="blob-shape" style={{ position: 'absolute', top: '20%', right: '15%', width: '300px', height: '300px', background: 'var(--color-accent)', opacity: 0.3, zIndex: -1 }} />
-
+        
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', alignItems: 'center' }}>
             <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, type: 'spring' }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'white', border: '3px solid var(--color-border)', padding: '0.5rem 1.2rem', borderRadius: '50px', fontWeight: 800, color: 'var(--color-primary)', marginBottom: '1.5rem', fontSize: 'clamp(0.8rem, 3vw, 1rem)' }}>
-                THE PREMIER LAGOS CAKE STUDIO
+                LAGOS' FINEST BAKERY
               </div>
-              <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)', lineHeight: 1.1, color: 'var(--color-text-main)', margin: '0 0 1.5rem 0' }}>
-                Baking <span style={{ color: 'var(--color-primary)', display: 'inline-block', position: 'relative' }}>Masterpieces<svg style={{ position: 'absolute', bottom: '-10px', left: 0, width: '100%', height: '20px' }} viewBox="0 0 100 20"><path d="M0 10 Q 50 20 100 10" stroke="var(--color-secondary)" strokeWidth="6" fill="transparent"/></svg></span><br/>For Your Greatest Moments.
+              <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', lineHeight: 1.1, color: 'var(--color-text-main)', margin: '0 0 1rem 0' }}>
+                Order Amazing <br/>Cakes from <span style={{ color: 'var(--color-primary)', display: 'inline-block', position: 'relative' }}>Just ₦16,500<svg style={{ position: 'absolute', bottom: '-10px', left: 0, width: '100%', height: '20px' }} viewBox="0 0 100 20"><path d="M0 10 Q 50 20 100 10" stroke="var(--color-secondary)" strokeWidth="6" fill="transparent"/></svg></span>
               </h1>
               <p style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)', color: 'var(--color-text-muted)', marginBottom: '2.5rem', fontWeight: 600, maxWidth: '520px', lineHeight: 1.6 }}>
-                Welcome to Xtra Fresh Cakes. We don't just bake; we craft spectacular, conversation-starting centerpieces that taste even better than they look. Whether it is an intimate celebration or a massive luxury wedding, we deliver perfection every single time.
+                Get fast shipping and unforgettable taste. Whether it's an intimate birthday or a grand wedding, we deliver perfection.
               </p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <a href="#collections" className="btn btn-primary" style={{ padding: 'clamp(0.8rem, 3vw, 1.2rem) clamp(1.5rem, 5vw, 2.5rem)', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>View the Collections</a>
-                <a href="#quote" className="btn btn-secondary" style={{ padding: 'clamp(0.8rem, 3vw, 1.2rem) clamp(1.5rem, 5vw, 2.5rem)', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>Commission a Cake</a>
+                <a href="#collections" className="btn btn-primary" style={{ padding: 'clamp(0.8rem, 3vw, 1.2rem) clamp(1.5rem, 5vw, 2.5rem)', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>Order Now</a>
+                <a href="#quote" className="btn btn-secondary" style={{ padding: 'clamp(0.8rem, 3vw, 1.2rem) clamp(1.5rem, 5vw, 2.5rem)', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>Custom Cake?</a>
               </div>
             </motion.div>
             
@@ -149,7 +182,6 @@ export default function Home() {
               transition={{ duration: 0.8, type: 'spring' }}
               style={{ position: 'relative', minHeight: '400px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
-              {/* Hero Image Wrapper */}
               <motion.div animate={{ y: [-15, 15] }} transition={bounceAnimation} style={{ position: 'relative', zIndex: 10, width: '100%', display: 'flex', justifyContent: 'center' }}>
                  <img src={`${basePath}/assets/hero_cake.png`} alt="Delicious Masterpiece Cake" style={{ width: '90%', maxWidth: '450px', borderRadius: '40px', border: 'clamp(5px, 2vw, 10px) solid white', boxShadow: '0 20px 50px rgba(255, 51, 102, 0.2)', transform: 'rotate(3deg)' }} />
               </motion.div>
@@ -158,81 +190,69 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The Visionary Section */}
-      <section id="founder" className="py-section" style={{ background: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
+      {/* The Promise Section */}
+      <section id="promise" className="py-section" style={{ background: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-50px', left: 0, right: 0, height: '100px', background: 'var(--color-bg)', borderRadius: '0 0 50% 50%' }}></div>
         <div className="container" style={{ position: 'relative', zIndex: 10, marginTop: '2rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'center' }}>
-            <div style={{ order: 2 }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.2)', padding: '0.5rem 1.2rem', borderRadius: '50px', fontWeight: 800, marginBottom: '1.5rem', fontSize: 'clamp(0.8rem, 3vw, 1rem)' }}>
-                MEET THE VISIONARY
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', color: 'white', margin: '0 0 1rem 0' }}>The Xtra Fresh Promise</h2>
+            <p style={{ fontSize: 'clamp(1rem, 3.5vw, 1.2rem)', fontWeight: 600, opacity: 0.9 }}>Why hundreds of Lagosians trust us with their most important celebrations.</p>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
+            <div className="fun-card" style={{ background: 'rgba(255,255,255,0.1)', border: '2px solid rgba(255,255,255,0.2)', padding: '2rem', textAlign: 'center', color: 'white', boxShadow: 'none' }}>
+              <div style={{ width: '70px', height: '70px', background: 'white', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto 1.5rem', color: 'var(--color-primary)' }}>
+                <Heart size={35} />
               </div>
-              <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', color: 'white', margin: '0 0 1.5rem 0' }}>Olaide Balikis Abdullateef</h2>
-              
-              <div style={{ fontSize: 'clamp(1rem, 3.5vw, 1.15rem)', fontWeight: 600, lineHeight: 1.8 }}>
-                <p style={{ marginBottom: '1.5rem' }}>
-                  The story of Xtra Fresh Cakes does not begin in a massive commercial kitchen. It begins in 1993, driven by a pure, undeniable passion for the craft of baking.
-                </p>
-                <p style={{ marginBottom: '1.5rem' }}>
-                  Olaide spent years mastering the intricate art of confectionery, starting out by baking strictly for her closest family and friends. Word quickly spread about the extraordinary taste and meticulous design of her cakes, transforming a personal passion into a highly sought-after brand.
-                </p>
-                <p style={{ marginBottom: '1.5rem' }}>
-                  Today, Olaide is at the helm of a premier bakery that not only delivers Lagos' most luxurious custom cakes, but also produces bread at scale for bulk buyers across the city. Her relentless commitment to quality has earned Xtra Fresh Cakes a reputation that speaks for itself.
-                </p>
-                <p style={{ marginBottom: '2rem' }}>
-                  Despite the massive growth, Olaide's philosophy remains intimately personal: <span style={{ color: 'var(--color-secondary)', fontWeight: 800 }}>"Every day should be a happy day."</span> She believes that you do not need a grand occasion to treat yourself to exceptional quality. Every slice leaving her kitchen is a testament to decades of passion, crafted to make your day just a little bit brighter.
-                </p>
-              </div>
+              <h3 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.5rem' }}>Premium Ingredients</h3>
+              <p style={{ opacity: 0.9, fontWeight: 600, fontSize: '0.95rem' }}>We never compromise. Only the finest butter, imported chocolate, and fresh extracts go into our bowls.</p>
             </div>
-            <div style={{ order: 1, display: 'flex', justifyContent: 'center' }}>
-              <img src={`${basePath}/assets/hero_cake.png`} alt="Founder Olaide Balikis Abdullateef" loading="lazy" style={{ width: '90%', maxWidth: '400px', borderRadius: '40px', border: 'clamp(5px, 2vw, 8px) solid white', transform: 'rotate(-3deg)' }} />
+            
+            <div className="fun-card" style={{ background: 'rgba(255,255,255,0.1)', border: '2px solid rgba(255,255,255,0.2)', padding: '2rem', textAlign: 'center', color: 'white', boxShadow: 'none' }}>
+              <div style={{ width: '70px', height: '70px', background: 'white', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto 1.5rem', color: 'var(--color-secondary)' }}>
+                <Clock size={35} />
+              </div>
+              <h3 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.5rem' }}>Lightning Delivery</h3>
+              <p style={{ opacity: 0.9, fontWeight: 600, fontSize: '0.95rem' }}>Your cake arrives on time, perfectly intact, anywhere in Lagos. No stories, no excuses.</p>
+            </div>
+            
+            <div className="fun-card" style={{ background: 'rgba(255,255,255,0.1)', border: '2px solid rgba(255,255,255,0.2)', padding: '2rem', textAlign: 'center', color: 'white', boxShadow: 'none' }}>
+              <div style={{ width: '70px', height: '70px', background: 'white', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto 1.5rem', color: 'var(--color-accent)' }}>
+                <Star size={35} />
+              </div>
+              <h3 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.5rem' }}>Impeccable Decor</h3>
+              <p style={{ opacity: 0.9, fontWeight: 600, fontSize: '0.95rem' }}>Our decorators are true artists. We craft centerpieces that command attention and start conversations.</p>
             </div>
           </div>
         </div>
         <div style={{ position: 'absolute', bottom: '-50px', left: 0, right: 0, height: '100px', background: 'white', borderRadius: '50% 50% 0 0' }}></div>
       </section>
 
-      {/* Colorful Collections Section */}
+      {/* Product Catalog Grid */}
       <section id="collections" className="py-section" style={{ background: 'white' }}>
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 4rem)' }}>
-            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)', color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>Signature Collections</h2>
-            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>Crafted for those who demand excellence in taste and design.</p>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)', color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>Popular Cakes</h2>
+            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>Tap to order immediately via WhatsApp.</p>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2.5rem' }}>
-            {[
-              { id: 'birthday', title: 'Epic Birthdays', desc: 'Unforgettable, towering centerpieces designed specifically to make your day extraordinary.', color: 'var(--color-primary)', img: `${basePath}/assets/category_birthday.png` },
-              { id: 'wedding', title: 'Dreamy Weddings', desc: 'Elegant, multi-tiered masterpieces that embody pure romance and luxury.', color: 'var(--color-accent)', img: `${basePath}/assets/category_wedding.png` },
-              { id: 'everyday', title: 'Just Because', desc: 'Because you never need an excuse to indulge in the finest cakes in Lagos.', color: 'var(--color-secondary)', img: `${basePath}/assets/category_anniversary.png` }
-            ].map((cat, i) => (
-              <div key={cat.id} className="fun-card" style={{ padding: 'clamp(1.5rem, 4vw, 2rem)', textAlign: 'center' }}>
-                <motion.div whileHover={{ scale: 1.05, rotate: 5 }} style={{ width: 'clamp(150px, 40vw, 200px)', height: 'clamp(150px, 40vw, 200px)', margin: '0 auto 1.5rem', borderRadius: '50%', border: `6px solid ${cat.color}`, overflow: 'hidden' }}>
-                  <img src={cat.img} alt={cat.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </motion.div>
-                <h3 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.2rem)', color: cat.color, margin: '0 0 1rem 0' }}>{cat.title}</h3>
-                <p style={{ color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '1.5rem', fontSize: 'clamp(0.95rem, 3vw, 1rem)' }}>{cat.desc}</p>
-                <a href="#quote" className="btn" style={{ background: cat.color, color: 'white', width: '100%', padding: '1rem', fontSize: 'clamp(1rem, 3vw, 1.1rem)' }}>Commission This</a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery Section */}
-      <section id="gallery" className="py-section" style={{ background: 'var(--color-bg-alt)' }}>
-        <div className="container">
-           <div className="text-center" style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 4rem)' }}>
-            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 3.5rem)', color: 'var(--color-text-main)', margin: '0 0 1rem 0' }}>Our Masterpieces</h2>
-            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>A closer look at the exceptional quality we deliver every day.</p>
-          </div>
-          <div style={{ columnCount: 'auto', columnWidth: '250px', columnGap: '1.5rem' }}>
-            {[
-              `${basePath}/assets/hero_cake.png`, `${basePath}/assets/category_wedding.png`, `${basePath}/assets/category_birthday.png`, 
-              `${basePath}/assets/category_anniversary.png`, `${basePath}/assets/hero_cake.png`, `${basePath}/assets/category_wedding.png`
-            ].map((src, i) => (
-              <motion.div key={i} whileHover={{ scale: 1.02, rotate: i % 2 === 0 ? 2 : -2 }} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} style={{ breakInside: 'avoid', marginBottom: '1.5rem', borderRadius: 'var(--border-radius)', overflow: 'hidden', border: '4px solid var(--color-border)', boxShadow: '0 10px 20px rgba(0,0,0,0.05)' }}>
-                <img src={src} alt="Cake Masterpiece" loading="lazy" style={{ width: '100%', display: 'block', borderRadius: 'calc(var(--border-radius) - 4px)' }} />
+            {CAKES.map((cake, i) => (
+              <motion.div key={cake.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="fun-card" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                <div style={{ position: 'relative', width: '100%', height: '280px', background: 'var(--color-bg)' }}>
+                  <img src={cake.img} alt={cake.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--color-accent)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '1px' }}>{cake.category}</span>
+                  <h3 style={{ fontSize: 'clamp(1.4rem, 4vw, 1.8rem)', color: 'var(--color-text-main)', margin: '0 0 0.5rem 0', lineHeight: 1.2 }}>{cake.title}</h3>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-primary)', marginBottom: '1.5rem' }}>{cake.price}</div>
+                  
+                  <div style={{ marginTop: 'auto' }}>
+                    <button onClick={() => handleOrderCake(cake)} className="btn btn-primary" style={{ width: '100%', display: 'flex', gap: '0.5rem', justifyContent: 'center', fontSize: '1rem', padding: '1rem' }}>
+                      Order via WhatsApp
+                    </button>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -243,8 +263,8 @@ export default function Home() {
       <section id="quote" className="py-section" style={{ background: 'var(--color-bg)' }}>
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
-            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)', color: 'var(--color-text-main)', margin: '0 0 1rem 0' }}>Let's Create Magic</h2>
-            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600, maxWidth: '600px', margin: '0 auto' }}>Submit your details below and we will connect with you immediately via WhatsApp to finalize your order.</p>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)', color: 'var(--color-text-main)', margin: '0 0 1rem 0' }}>Commission a Custom Cake</h2>
+            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600, maxWidth: '600px', margin: '0 auto' }}>Can't find what you're looking for? Submit your details below and Biliqis will connect with you to design your dream cake.</p>
           </div>
 
           <div className="fun-card" style={{ maxWidth: '800px', margin: '0 auto', padding: 'clamp(1.5rem, 5vw, 3rem)', position: 'relative' }}>
@@ -255,7 +275,7 @@ export default function Home() {
                     <CheckCircle size={100} fill="var(--color-primary)" color="white" />
                   </motion.div>
                   <h3 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', color: 'var(--color-primary)', marginBottom: '1rem' }}>Details Received</h3>
-                  <p style={{ fontSize: 'clamp(1rem, 3.5vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '2rem' }}>Redirecting you to WhatsApp to connect with our team...</p>
+                  <p style={{ fontSize: 'clamp(1rem, 3.5vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '2rem' }}>Redirecting you to WhatsApp to connect with Biliqis...</p>
                   <button onClick={() => setIsSuccess(false)} className="btn btn-secondary">Commission Another Cake</button>
                 </motion.div>
               ) : (
@@ -306,55 +326,59 @@ export default function Home() {
 
       {/* General Inquiry Section */}
       <section id="contact" className="py-section" style={{ background: 'white' }}>
-        <div className="container" style={{ maxWidth: '600px' }}>
+        <div className="container" style={{ maxWidth: '800px' }}>
           <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
-            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>General Inquiries</h2>
-            <p style={{ fontSize: 'clamp(0.95rem, 3.5vw, 1.1rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>Not quite ready to order? Reach out with any general questions and our team will be happy to assist.</p>
+            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>Need Assistance?</h2>
+            <p style={{ fontSize: 'clamp(0.95rem, 3.5vw, 1.1rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>Reach out directly to Biliqis and our team.</p>
           </div>
 
           <div className="fun-card" style={{ padding: 'clamp(1.5rem, 5vw, 2.5rem)', position: 'relative' }}>
-             <AnimatePresence>
-              {isInquirySuccess ? (
-                 <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: 'center', padding: '2rem 1rem' }}>
-                  <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 0.5 }} style={{ color: 'var(--color-secondary)', marginBottom: '1rem', display: 'inline-block' }}>
-                    <CheckCircle size={80} fill="var(--color-primary)" color="white" />
-                  </motion.div>
-                  <h3 style={{ fontSize: 'clamp(1.8rem, 5vw, 2rem)', color: 'var(--color-primary)', marginBottom: '1rem' }}>Redirecting...</h3>
-                  <p style={{ fontSize: 'clamp(1rem, 3.5vw, 1.1rem)', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '2rem' }}>Opening WhatsApp to send your inquiry.</p>
-                  <button onClick={() => setIsInquirySuccess(false)} className="btn btn-secondary">Send Another Message</button>
-                </motion.div>
-              ) : (
-                <motion.form onSubmit={handleInquirySubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                  {isInquirySubmitting && (
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.8)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '16px' }}>
-                      <Loader2 size={50} color="var(--color-primary)" className="animate-spin" />
-                    </div>
-                  )}
-                  
-                  <div>
-                    <label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Your Name</label>
-                    <input name="name" className="form-control" required />
-                  </div>
-                  <div>
-                    <label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Your Message</label>
-                    <textarea name="message" className="form-control" rows="4" required placeholder="How can we help you today?"></textarea>
-                  </div>
-                  
-                  <button type="submit" className="btn btn-secondary" style={{ width: '100%', fontSize: 'clamp(1rem, 4vw, 1.2rem)', padding: 'clamp(1rem, 4vw, 1.2rem)' }}>SEND TO WHATSAPP</button>
-                </motion.form>
-              )}
-             </AnimatePresence>
              
-             <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '2px dashed var(--color-border)', textAlign: 'center' }}>
-               <p style={{ fontWeight: 700, color: 'var(--color-text-main)', marginBottom: '1rem' }}>Or contact us directly:</p>
-               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-                 <a href="mailto:xtrafreshcakes@gmail.com" className="btn" style={{ background: 'var(--color-bg)', border: '2px solid var(--color-border)', color: 'var(--color-text-main)', padding: '0.8rem 1.5rem', borderRadius: '20px', fontSize: 'clamp(0.9rem, 3vw, 1rem)' }}>
-                   xtrafreshcakes@gmail.com
-                 </a>
-                 <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: 'var(--color-bg)', border: '2px solid var(--color-border)', color: 'var(--color-text-main)', padding: '0.8rem 1.5rem', borderRadius: '20px', fontSize: 'clamp(0.9rem, 3vw, 1rem)' }}>
-                   WhatsApp: 08021342856
-                 </a>
-               </div>
+             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                <p style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--color-text-main)', marginBottom: '1.5rem' }}>Contact us instantly via:</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
+                  <a href={`tel:${CALL_NUMBER_1}`} className="btn" style={{ background: 'var(--color-primary)', color: 'white', padding: '0.8rem 1.5rem', borderRadius: '20px', fontSize: 'clamp(0.9rem, 3vw, 1rem)' }}>
+                    <Phone size={18} style={{ marginRight: '8px' }} /> Call: 0906 000 9541
+                  </a>
+                  <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: '#25D366', color: 'white', padding: '0.8rem 1.5rem', borderRadius: '20px', fontSize: 'clamp(0.9rem, 3vw, 1rem)' }}>
+                    <MessageCircle size={18} style={{ marginRight: '8px' }} /> WhatsApp / Call: 0802 134 2856
+                  </a>
+                </div>
+             </div>
+
+             <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '2px dashed var(--color-border)' }}>
+               <h3 style={{ fontSize: '1.2rem', color: 'var(--color-text-main)', textAlign: 'center', marginBottom: '1rem' }}>Or send a quick message:</h3>
+               <AnimatePresence>
+                {isInquirySuccess ? (
+                   <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+                    <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 0.5 }} style={{ color: 'var(--color-secondary)', marginBottom: '1rem', display: 'inline-block' }}>
+                      <CheckCircle size={80} fill="var(--color-primary)" color="white" />
+                    </motion.div>
+                    <h3 style={{ fontSize: 'clamp(1.8rem, 5vw, 2rem)', color: 'var(--color-primary)', marginBottom: '1rem' }}>Redirecting...</h3>
+                    <p style={{ fontSize: 'clamp(1rem, 3.5vw, 1.1rem)', color: 'var(--color-text-muted)', fontWeight: 600, marginBottom: '2rem' }}>Opening WhatsApp to send your inquiry.</p>
+                    <button onClick={() => setIsInquirySuccess(false)} className="btn btn-secondary">Send Another Message</button>
+                  </motion.div>
+                ) : (
+                  <motion.form onSubmit={handleInquirySubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {isInquirySubmitting && (
+                      <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.8)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '16px' }}>
+                        <Loader2 size={50} color="var(--color-primary)" className="animate-spin" />
+                      </div>
+                    )}
+                    
+                    <div>
+                      <label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Your Name</label>
+                      <input name="name" className="form-control" required />
+                    </div>
+                    <div>
+                      <label style={{ fontWeight: 700, marginBottom: '0.5rem', display: 'block' }}>Your Message</label>
+                      <textarea name="message" className="form-control" rows="4" required placeholder="How can we help you today?"></textarea>
+                    </div>
+                    
+                    <button type="submit" className="btn btn-secondary" style={{ width: '100%', fontSize: 'clamp(1rem, 4vw, 1.2rem)', padding: 'clamp(1rem, 4vw, 1.2rem)' }}>SEND TO WHATSAPP</button>
+                  </motion.form>
+                )}
+               </AnimatePresence>
              </div>
           </div>
         </div>

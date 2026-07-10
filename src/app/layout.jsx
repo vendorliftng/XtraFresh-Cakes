@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
           <div style={{ fontSize: 'clamp(1.5rem, 5vw, 2.6rem)', fontWeight: 800, fontFamily: 'var(--font-heading)', color: 'var(--color-primary)', whiteSpace: 'nowrap' }}>XTRA FRESH<span style={{ color: 'var(--color-secondary)' }}>!</span></div>
           <div style={{ display: 'flex', gap: 'clamp(0.2rem, 1vw, 2rem)', alignItems: 'center' }}>
             <a href="#collections" style={{ fontWeight: 700, color: 'var(--color-text-main)', fontSize: 'clamp(0.6rem, 1.5vw, 1rem)' }}>Cakes</a>
-            <a href="#founder" style={{ fontWeight: 700, color: 'var(--color-text-main)', fontSize: 'clamp(0.6rem, 1.5vw, 1rem)' }}>Our Story</a>
+            <a href="#promise" style={{ fontWeight: 700, color: 'var(--color-text-main)', fontSize: 'clamp(0.6rem, 1.5vw, 1rem)' }}>Our Promise</a>
             <a href="#quote" className="btn btn-primary" style={{ padding: 'clamp(0.2rem, 1vw, 0.6rem) clamp(0.5rem, 2vw, 1.5rem)', fontSize: 'clamp(0.6rem, 1.5vw, 1rem)' }}>Order Now</a>
           </div>
         </div>
