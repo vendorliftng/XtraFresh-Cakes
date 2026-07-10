@@ -165,10 +165,10 @@ export default function Home() {
                 LAGOS' FINEST BAKERY
               </div>
               <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', lineHeight: 1.1, color: 'var(--color-text-main)', margin: '0 0 1rem 0' }}>
-                Order Amazing <br/>Cakes from <span style={{ color: 'var(--color-primary)', display: 'inline-block', position: 'relative' }}>Just ₦16,500<svg style={{ position: 'absolute', bottom: '-10px', left: 0, width: '100%', height: '20px' }} viewBox="0 0 100 20"><path d="M0 10 Q 50 20 100 10" stroke="var(--color-secondary)" strokeWidth="6" fill="transparent"/></svg></span>
+                Show-Stopping <br/>Cakes for <span style={{ color: 'var(--color-primary)', display: 'inline-block', position: 'relative' }}>Every Occasion<svg style={{ position: 'absolute', bottom: '-10px', left: 0, width: '100%', height: '20px' }} viewBox="0 0 100 20"><path d="M0 10 Q 50 20 100 10" stroke="var(--color-secondary)" strokeWidth="6" fill="transparent"/></svg></span>
               </h1>
               <p style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)', color: 'var(--color-text-muted)', marginBottom: '2.5rem', fontWeight: 600, maxWidth: '520px', lineHeight: 1.6 }}>
-                Get fast shipping and unforgettable taste. Whether it's an intimate birthday or a grand wedding, we deliver perfection.
+                From intimate birthdays to grand weddings. Experience premium designs, lightning-fast delivery, and prices that will make you smile.
               </p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <a href="#collections" className="btn btn-primary" style={{ padding: 'clamp(0.8rem, 3vw, 1.2rem) clamp(1.5rem, 5vw, 2.5rem)', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>Order Now</a>
