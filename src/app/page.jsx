@@ -314,8 +314,8 @@ export default function Home() {
                  <a href="mailto:xtrafreshcakes@gmail.com" className="btn" style={{ background: 'var(--color-bg)', border: '2px solid var(--color-border)', color: 'var(--color-text-main)', padding: '0.8rem 1.5rem', borderRadius: '20px' }}>
                    xtrafreshcakes@gmail.com
                  </a>
-                 <a href="mailto:fataj001@gmail.com" className="btn" style={{ background: 'var(--color-bg)', border: '2px solid var(--color-border)', color: 'var(--color-text-main)', padding: '0.8rem 1.5rem', borderRadius: '20px' }}>
-                   fataj001@gmail.com
+                 <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: 'var(--color-bg)', border: '2px solid var(--color-border)', color: 'var(--color-text-main)', padding: '0.8rem 1.5rem', borderRadius: '20px' }}>
+                   WhatsApp: 08021342856
                  </a>
                </div>
              </div>
