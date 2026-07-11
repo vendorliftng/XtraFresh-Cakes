@@ -237,7 +237,7 @@ export default function Home() {
             {CAKES.slice(0, 12).map((cake, i) => (
               <motion.div key={cake.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="fun-card" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                 <div style={{ position: 'relative', width: '100%', height: '280px', background: 'var(--color-bg)' }}>
-                  <img src={cake.img} alt={cake.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={`${basePath}${cake.img}`} alt={cake.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                   <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--color-accent)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '1px' }}>{cake.category}</span>

@@ -14,7 +14,7 @@ export default function Navbar() {
     <>
       <nav style={{ position: "fixed", top: 0, width: "100%", padding: "clamp(0.8rem, 2vw, 1.5rem) 0", zIndex: 100, background: "rgba(255, 245, 248, 0.9)", backdropFilter: "blur(10px)", borderBottom: "clamp(2px, 1vw, 4px) solid var(--color-border)" }}>
         <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 clamp(0.5rem, 2vw, 2rem)", gap: "10px" }}>
-          <a href={`${basePath}/`} style={{ textDecoration: 'none', fontSize: "clamp(1.5rem, 5vw, 2.6rem)", fontWeight: 800, fontFamily: "var(--font-heading)", color: "var(--color-primary)", whiteSpace: "nowrap" }}>
+          <a href={`${basePath}/`} style={{ textDecoration: 'none', fontSize: "clamp(1.2rem, 3.5vw, 1.8rem)", fontWeight: 800, fontFamily: "var(--font-heading)", color: "var(--color-primary)", whiteSpace: "nowrap" }}>
             XTRA FRESH<span style={{ color: "var(--color-secondary)" }}>!</span>
           </a>
           <div style={{ display: "flex", gap: "clamp(0.2rem, 1vw, 2rem)", alignItems: "center" }}>

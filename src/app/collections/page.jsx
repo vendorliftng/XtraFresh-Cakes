@@ -7,6 +7,7 @@ import { Loader2 } from "lucide-react";
 
 export default function CollectionsPage() {
   const WHATSAPP_NUMBER = CONFIG.WHATSAPP_NUMBER;
+  const basePath = process.env.NODE_ENV === 'production' ? '/XtraFresh-Cakes' : '';
 
   const handleOrder = (cake) => {
     const text = `Hi Biliqis, I would like to order the ${cake.title}!`;
@@ -34,7 +35,7 @@ export default function CollectionsPage() {
             style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
           >
             <div style={{ position: "relative", width: "100%", height: "280px", background: "var(--color-bg)" }}>
-              <img src={cake.img} alt={cake.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img src={`${basePath}${cake.img}`} alt={cake.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
             <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", flexGrow: 1 }}>
               <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "var(--color-accent)", textTransform: "uppercase", marginBottom: "0.5rem", letterSpacing: "1px" }}>
