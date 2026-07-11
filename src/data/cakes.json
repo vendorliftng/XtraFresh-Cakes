@@ -1,0 +1,86 @@
+[
+  {
+    "id": "vintage-heart",
+    "title": "Vintage Heart Cake",
+    "category": "Birthday",
+    "img": "/assets/hero_cake.png",
+    "priceRange": "₦15,000‑₦20,000"
+  },
+  {
+    "id": "legacy-alte",
+    "title": "Legacy Alte Cake",
+    "category": "Anniversary",
+    "img": "/assets/category_birthday.png",
+    "priceRange": "₦18,000‑₦22,000"
+  },
+  {
+    "id": "flork-love",
+    "title": "Flork Love Cake",
+    "category": "Wedding",
+    "img": "/assets/category_anniversary.png",
+    "priceRange": "₦20,000‑₦30,000"
+  },
+  {
+    "id": "chocolate-drip",
+    "title": "Luxury Chocolate Drip",
+    "category": "Chocolate",
+    "img": "/assets/category_birthday.png",
+    "priceRange": "₦25,000‑₦35,000"
+  },
+  {
+    "id": "crescent-double",
+    "title": "Crescent Double‑Layered",
+    "category": "Tiered",
+    "img": "/assets/category_wedding.png",
+    "priceRange": "₦30,000‑₦45,000"
+  },
+  {
+    "id": "wedding-tier",
+    "title": "Classic Wedding Tier",
+    "category": "Wedding",
+    "img": "/assets/category_wedding.png",
+    "priceRange": "₦80,000‑₦100,000"
+  },
+  {
+    "id": "chocolate-mousse",
+    "title": "Chocolate Mousse Delight",
+    "category": "Chocolate",
+    "img": "/assets/hero_cake.png",
+    "priceRange": "₦22,000‑₦28,000"
+  },
+  {
+    "id": "fruit-fusion",
+    "title": "Fruit Fusion Cake",
+    "category": "Birthday",
+    "img": "/assets/category_anniversary.png",
+    "priceRange": "₦18,000‑₦24,000"
+  },
+  {
+    "id": "red-velvet",
+    "title": "Red Velvet Elegance",
+    "category": "Wedding",
+    "img": "/assets/category_wedding.png",
+    "priceRange": "₦35,000‑₦45,000"
+  },
+  {
+    "id": "vanilla-silk",
+    "title": "Vanilla Silk Cake",
+    "category": "Birthday",
+    "img": "/assets/category_birthday.png",
+    "priceRange": "₦15,000‑₦20,000"
+  },
+  {
+    "id": "nutty-nirvana",
+    "title": "Nutty Nirvana",
+    "category": "Anniversary",
+    "img": "/assets/hero_cake.png",
+    "priceRange": "₦25,000‑₦30,000"
+  },
+  {
+    "id": "gold-glaze",
+    "title": "Gold Glaze Celebration",
+    "category": "Custom",
+    "img": "/assets/category_wedding.png",
+    "priceRange": "Custom Pricing"
+  }
+]

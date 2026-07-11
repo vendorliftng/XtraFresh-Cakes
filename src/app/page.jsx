@@ -4,6 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Loader2, CheckCircle, Sparkles, MessageCircle, Phone, Heart, Star, Clock } from 'lucide-react';
 
+import { CONFIG } from './config';
+import cakesData from '../data/cakes.json';
+import TestimonialCarousel from './components/TestimonialCarousel';
+
 export default function Home() {
   const basePath = process.env.NODE_ENV === 'production' ? '/XtraFresh-Cakes' : '';
 
@@ -21,17 +25,10 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const WHATSAPP_NUMBER = "2348021342856";
-  const CALL_NUMBER_1 = "2349060009541";
+  const WHATSAPP_NUMBER = CONFIG.WHATSAPP_NUMBER;
+  const CALL_NUMBER_1 = CONFIG.CALL_NUMBER;
 
-  const CAKES = [
-    { id: 'vintage-heart', title: 'Vintage Heart Cake', price: '₦16,500', category: 'Buttercream Cakes', img: `${basePath}/assets/hero_cake.png` },
-    { id: 'legacy-alte', title: 'Legacy Alte Cake', price: '₦18,500', category: 'Buttercream Cakes', img: `${basePath}/assets/category_birthday.png` },
-    { id: 'flork-love', title: 'Flork Love Cake', price: '₦22,000', category: 'Buttercream Cakes', img: `${basePath}/assets/category_anniversary.png` },
-    { id: 'chocolate-drip', title: 'Luxury Chocolate Drip', price: '₦25,000', category: 'Chocolate Cakes', img: `${basePath}/assets/category_birthday.png` },
-    { id: 'crescent-double', title: 'Crescent Double-Layered', price: '₦35,000', category: 'Tiered Cakes', img: `${basePath}/assets/category_wedding.png` },
-    { id: 'wedding-tier', title: 'Classic Wedding Tier', price: '₦85,000', category: 'Wedding Cakes', img: `${basePath}/assets/category_wedding.png` },
-  ];
+  const CAKES = cakesData;
 
   const handleOrderCake = (cake) => {
     const text = `Hi Biliqis, I would like to order the ${cake.title} (${cake.price})!`;
@@ -165,10 +162,10 @@ export default function Home() {
                 LAGOS' FINEST BAKERY
               </div>
               <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', lineHeight: 1.1, color: 'var(--color-text-main)', margin: '0 0 1rem 0' }}>
-                Show-Stopping <br/>Cakes for <span style={{ color: 'var(--color-primary)', display: 'inline-block', position: 'relative' }}>Every Occasion<svg style={{ position: 'absolute', bottom: '-10px', left: 0, width: '100%', height: '20px' }} viewBox="0 0 100 20"><path d="M0 10 Q 50 20 100 10" stroke="var(--color-secondary)" strokeWidth="6" fill="transparent"/></svg></span>
+                Premium Cakes for <br/>Your <span style={{ color: 'var(--color-primary)', display: 'inline-block', position: 'relative' }}>Owambe & Celebrations<svg style={{ position: 'absolute', bottom: '-10px', left: 0, width: '100%', height: '20px' }} viewBox="0 0 100 20"><path d="M0 10 Q 50 20 100 10" stroke="var(--color-secondary)" strokeWidth="6" fill="transparent"/></svg></span>
               </h1>
               <p style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)', color: 'var(--color-text-muted)', marginBottom: '2.5rem', fontWeight: 600, maxWidth: '520px', lineHeight: 1.6 }}>
-                From intimate birthdays to grand weddings. Experience premium designs, lightning-fast delivery, and prices that will make you smile.
+                Whether it's a small get-together or a massive party, we bring the sweetness to your doorstep. Freshly baked with love, delivered fast anywhere in Lagos!
               </p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <a href="#collections" className="btn btn-primary" style={{ padding: 'clamp(0.8rem, 3vw, 1.2rem) clamp(1.5rem, 5vw, 2.5rem)', fontSize: 'clamp(1rem, 3vw, 1.2rem)' }}>Order Now</a>
@@ -195,8 +192,8 @@ export default function Home() {
         <div style={{ position: 'absolute', top: '-50px', left: 0, right: 0, height: '100px', background: 'var(--color-bg)', borderRadius: '0 0 50% 50%' }}></div>
         <div className="container" style={{ position: 'relative', zIndex: 10, marginTop: '2rem' }}>
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', color: 'white', margin: '0 0 1rem 0' }}>The Xtra Fresh Promise</h2>
-            <p style={{ fontSize: 'clamp(1rem, 3.5vw, 1.2rem)', fontWeight: 600, opacity: 0.9 }}>Why hundreds of Lagosians trust us with their most important celebrations.</p>
+            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', color: 'white', margin: '0 0 1rem 0' }}>Why you'll absolutely love our cakes</h2>
+            <p style={{ fontSize: 'clamp(1rem, 3.5vw, 1.2rem)', fontWeight: 600, opacity: 0.9 }}>We put our heart into every bake, and it shows.</p>
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
@@ -205,7 +202,7 @@ export default function Home() {
                 <Heart size={35} />
               </div>
               <h3 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.5rem' }}>Premium Ingredients</h3>
-              <p style={{ opacity: 0.9, fontWeight: 600, fontSize: '0.95rem' }}>We never compromise. Only the finest butter, imported chocolate, and fresh extracts go into our bowls.</p>
+              <p style={{ opacity: 0.9, fontWeight: 600, fontSize: '0.95rem' }}>We don't cut corners. Your cake gets only the finest butter, imported chocolate, and fresh extracts.</p>
             </div>
             
             <div className="fun-card" style={{ background: 'rgba(255,255,255,0.1)', border: '2px solid rgba(255,255,255,0.2)', padding: '2rem', textAlign: 'center', color: 'white', boxShadow: 'none' }}>
@@ -213,7 +210,7 @@ export default function Home() {
                 <Clock size={35} />
               </div>
               <h3 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.5rem' }}>Lightning Delivery</h3>
-              <p style={{ opacity: 0.9, fontWeight: 600, fontSize: '0.95rem' }}>Your cake arrives on time, perfectly intact, anywhere in Lagos. No stories, no excuses.</p>
+              <p style={{ opacity: 0.9, fontWeight: 600, fontSize: '0.95rem' }}>Your cake arrives on time and perfectly intact, anywhere in Lagos. No stories, no excuses!</p>
             </div>
             
             <div className="fun-card" style={{ background: 'rgba(255,255,255,0.1)', border: '2px solid rgba(255,255,255,0.2)', padding: '2rem', textAlign: 'center', color: 'white', boxShadow: 'none' }}>
@@ -221,7 +218,7 @@ export default function Home() {
                 <Star size={35} />
               </div>
               <h3 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.5rem' }}>Impeccable Decor</h3>
-              <p style={{ opacity: 0.9, fontWeight: 600, fontSize: '0.95rem' }}>Our decorators are true artists. We craft centerpieces that command attention and start conversations.</p>
+              <p style={{ opacity: 0.9, fontWeight: 600, fontSize: '0.95rem' }}>Our decorators are true artists. We craft centerpieces that'll have everyone asking, "Where did you get this cake?"</p>
             </div>
           </div>
         </div>
@@ -232,12 +229,12 @@ export default function Home() {
       <section id="collections" className="py-section" style={{ background: 'white' }}>
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 4rem)' }}>
-            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)', color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>Popular Cakes</h2>
-            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>Tap to order immediately via WhatsApp.</p>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)', color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>Cakes you're currently crushing on</h2>
+            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>See something you like? Tap to chat with us and order instantly.</p>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2.5rem' }}>
-            {CAKES.map((cake, i) => (
+            {CAKES.slice(0, 12).map((cake, i) => (
               <motion.div key={cake.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="fun-card" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                 <div style={{ position: 'relative', width: '100%', height: '280px', background: 'var(--color-bg)' }}>
                   <img src={cake.img} alt={cake.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -245,7 +242,7 @@ export default function Home() {
                 <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                   <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--color-accent)', textTransform: 'uppercase', marginBottom: '0.5rem', letterSpacing: '1px' }}>{cake.category}</span>
                   <h3 style={{ fontSize: 'clamp(1.4rem, 4vw, 1.8rem)', color: 'var(--color-text-main)', margin: '0 0 0.5rem 0', lineHeight: 1.2 }}>{cake.title}</h3>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-primary)', marginBottom: '1.5rem' }}>{cake.price}</div>
+                  
                   
                   <div style={{ marginTop: 'auto' }}>
                     <button onClick={() => handleOrderCake(cake)} className="btn btn-primary" style={{ width: '100%', display: 'flex', gap: '0.5rem', justifyContent: 'center', fontSize: '1rem', padding: '1rem' }}>
@@ -259,12 +256,15 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <TestimonialCarousel />
+
       {/* Quote Form Section */}
       <section id="quote" className="py-section" style={{ background: 'var(--color-bg)' }}>
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
-            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)', color: 'var(--color-text-main)', margin: '0 0 1rem 0' }}>Commission a Custom Cake</h2>
-            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600, maxWidth: '600px', margin: '0 auto' }}>Can't find what you're looking for? Submit your details below and Biliqis will connect with you to design your dream cake.</p>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 4rem)', color: 'var(--color-text-main)', margin: '0 0 1rem 0' }}>Let's design your dream cake!</h2>
+            <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600, maxWidth: '600px', margin: '0 auto' }}>Can't find exactly what you're looking for? Tell us what you have in mind and we'll bring it to life.</p>
           </div>
 
           <div className="fun-card" style={{ maxWidth: '800px', margin: '0 auto', padding: 'clamp(1.5rem, 5vw, 3rem)', position: 'relative' }}>
@@ -328,8 +328,8 @@ export default function Home() {
       <section id="contact" className="py-section" style={{ background: 'white' }}>
         <div className="container" style={{ maxWidth: '800px' }}>
           <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
-            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>Need Assistance?</h2>
-            <p style={{ fontSize: 'clamp(0.95rem, 3.5vw, 1.1rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>Reach out directly to Biliqis and our team.</p>
+            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', color: 'var(--color-primary)', margin: '0 0 1rem 0' }}>Got a question? We're all ears!</h2>
+            <p style={{ fontSize: 'clamp(0.95rem, 3.5vw, 1.1rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>Say hi on WhatsApp or drop us a quick message.</p>
           </div>
 
           <div className="fun-card" style={{ padding: 'clamp(1.5rem, 5vw, 2.5rem)', position: 'relative' }}>
