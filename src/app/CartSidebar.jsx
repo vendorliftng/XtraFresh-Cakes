@@ -9,7 +9,7 @@ export default function CartSidebar({ isOpen, onClose }) {
 
   const generateMessage = () => {
     if (cartItems.length === 0) return '';
-    let msg = 'Hi Biliqis, I would like to order:%0A';
+    let msg = "Hey Biliqis! I'm ready to treat myself to some Xtra Fresh goodness. Here is my order:%0A";
     cartItems.forEach((item) => {
       msg += `- ${item.title} x${item.qty}%0A`;
     });

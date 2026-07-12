@@ -31,7 +31,7 @@ export default function Home() {
   const CAKES = cakesData;
 
   const handleOrderCake = (cake) => {
-    const text = `Hi Biliqis, I would like to order the ${cake.title} (${cake.price})!`;
+    const text = `Hey Biliqis! I'm completely obsessed with the ${cake.title} and need to order one ASAP! 🤤`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -58,7 +58,7 @@ export default function Home() {
       setIsSuccess(true);
       e.target.reset();
       
-      const whatsappMsg = `Hello Biliqis, I would like to commission a custom cake.\n\nName: ${data.firstName} ${data.lastName}\nEvent: ${data.eventType} on ${data.eventDate}\nWhatsApp: ${data.phone}\nDetails: ${data.vision}`;
+      const whatsappMsg = `Hey Biliqis! I've got a big event coming up and I need a custom cake that'll steal the show! ✨\n\nName: ${data.firstName} ${data.lastName}\nEvent: ${data.eventType} on ${data.eventDate}\nWhatsApp: ${data.phone}\nMy Vision: ${data.vision}`;
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
       window.open(whatsappUrl, '_blank');
     } catch (error) {
@@ -79,7 +79,7 @@ export default function Home() {
       setIsInquirySuccess(true);
       e.target.reset();
       
-      const whatsappMsg = `Hello Biliqis. I have a general inquiry.\n\nFrom: ${data.name}\n\nMessage:\n${data.message}`;
+      const whatsappMsg = `Hey there! Quick question about your awesome cakes... 🍰\n\nFrom: ${data.name}\n\nMessage:\n${data.message}`;
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
       window.open(whatsappUrl, '_blank');
     } catch (error) {
@@ -143,7 +143,7 @@ export default function Home() {
           </div>
           <p style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', margin: 0, lineHeight: 1.4 }}>Hi 👋, need help with your order? We reply very fast!</p>
         </motion.div>
-        <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi Biliqis, I need some help choosing a cake!`} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: '#25D366', color: 'white', width: '65px', height: '65px', borderRadius: '50%', padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 10px 25px rgba(37,211,102,0.4)', border: 'none' }}>
+        <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hey! I'm craving something sweet and Xtra Fresh! Can you help me pick the perfect cake? 🎂✨")}`} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: '#25D366', color: 'white', width: '65px', height: '65px', borderRadius: '50%', padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 10px 25px rgba(37,211,102,0.4)', border: 'none' }}>
           <MessageCircle size={32} />
         </a>
       </div>

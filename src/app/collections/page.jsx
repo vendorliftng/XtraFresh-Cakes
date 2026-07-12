@@ -10,7 +10,7 @@ export default function CollectionsPage() {
   const basePath = process.env.NODE_ENV === 'production' ? '/XtraFresh-Cakes' : '';
 
   const handleOrder = (cake) => {
-    const text = `Hi Biliqis, I would like to order the ${cake.title}!`;
+    const text = `Hey Biliqis! I'm completely obsessed with the ${cake.title} and need to order one ASAP! 🤤`;
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
   };
