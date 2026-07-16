@@ -1,11 +1,35 @@
 "use client";
 
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { CONFIG } from "../config";
 import cakesData from "../../data/cakes.json";
 import { Loader2 } from "lucide-react";
 
 export default function CollectionsPage() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const { fetchData } = await import('../../lib/database');
+        const data = await fetchData('Products');
+        if (data && data.length > 0) {
+          setProducts(data);
+        } else {
+          setProducts(cakesData);
+        }
+      } catch (err) {
+        console.error(err);
+        setProducts(cakesData);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProducts();
+  }, []);
+
   const WHATSAPP_NUMBER = CONFIG.WHATSAPP_NUMBER;
   const basePath = process.env.NODE_ENV === 'production' ? '/XtraFresh-Cakes' : '';
 
@@ -15,6 +39,8 @@ export default function CollectionsPage() {
     window.open(url, "_blank");
   };
 
+  const displayCakes = products.length > 0 ? products : cakesData;
+
   return (
     <main className="container" style={{ padding: "2rem" }}>
       <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 5vw, 4rem)' }}>
@@ -23,8 +49,13 @@ export default function CollectionsPage() {
         </h2>
         <p style={{ fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: 'var(--color-text-muted)', fontWeight: 600 }}>See something that makes you hungry? Let's chat!</p>
       </div>
+      {loading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
+          <Loader2 className="animate-spin" size={50} color="var(--color-primary)" />
+        </div>
+      ) : (
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2.5rem" }}>
-        {cakesData.map((cake, i) => (
+        {displayCakes.map((cake, i) => (
           <motion.div
             key={cake.id}
             initial={{ opacity: 0, y: 30 }}
@@ -53,6 +84,7 @@ export default function CollectionsPage() {
           </motion.div>
         ))}
       </div>
+      )}
     </main>
   );
 }

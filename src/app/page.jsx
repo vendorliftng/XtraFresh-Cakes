@@ -20,15 +20,39 @@ export default function Home() {
   // Preloader State
   const [loading, setLoading] = useState(true);
 
+  // Products State
+  const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2500);
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const { fetchData } = await import('../lib/database');
+        const data = await fetchData('Products');
+        if (data && data.length > 0) {
+          setProducts(data);
+        } else {
+          setProducts(cakesData); // fallback
+        }
+      } catch (err) {
+        console.error(err);
+        setProducts(cakesData); // fallback
+      } finally {
+        setProductsLoading(false);
+      }
+    };
+    loadProducts();
+  }, []);
+
   const WHATSAPP_NUMBER = CONFIG.WHATSAPP_NUMBER;
   const CALL_NUMBER_1 = CONFIG.CALL_NUMBER;
 
-  const CAKES = cakesData;
+  const CAKES = products.length > 0 ? products : cakesData;
 
   const handleOrderCake = (cake) => {
     const text = `Hey Biliqis! I'm completely obsessed with the ${cake.title} and need to order one ASAP! 🤤`;
@@ -43,17 +67,19 @@ export default function Home() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_URL;
-      if (scriptUrl) {
-        await fetch(scriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-          mode: 'no-cors'
-        });
-      } else {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-      }
+      const { saveToSheet } = await import('../lib/database');
+      const date = new Date().toISOString().split('T')[0];
+      const rowData = [
+        date, 
+        data.firstName, 
+        data.lastName, 
+        data.phone, 
+        data.email || '', 
+        data.eventType, 
+        data.eventDate, 
+        data.vision
+      ];
+      await saveToSheet('Quotes', rowData);
       
       setIsSuccess(true);
       e.target.reset();
