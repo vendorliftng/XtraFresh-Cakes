@@ -338,10 +338,10 @@ export default function Home() {
                 <p style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--color-text-main)', marginBottom: '1.5rem' }}>Contact us instantly via:</p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
                   <a href={`tel:${CALL_NUMBER_1}`} className="btn" style={{ background: 'var(--color-primary)', color: 'white', padding: '0.8rem 1.5rem', borderRadius: '20px', fontSize: 'clamp(0.9rem, 3vw, 1rem)' }}>
-                    <Phone size={18} style={{ marginRight: '8px' }} /> Call: 0906 000 9541
+                    <Phone size={18} style={{ marginRight: '8px' }} /> Call: 0802 134 2856
                   </a>
                   <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: '#25D366', color: 'white', padding: '0.8rem 1.5rem', borderRadius: '20px', fontSize: 'clamp(0.9rem, 3vw, 1rem)' }}>
-                    <MessageCircle size={18} style={{ marginRight: '8px' }} /> WhatsApp / Call: 0802 134 2856
+                    <MessageCircle size={18} style={{ marginRight: '8px' }} /> WhatsApp / Call: 0906 000 9541
                   </a>
                 </div>
              </div>
