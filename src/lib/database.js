@@ -7,10 +7,7 @@ export const fetchData = async (sheetName) => {
   try {
     const res = await fetch(`${url}?sheet=${sheetName}`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: { revalidate: 60 }, // Revalidate data every 60 seconds
+      cache: 'no-store', // Always get fresh data
     });
     const data = await res.json();
     return Array.isArray(data) ? data : [];
