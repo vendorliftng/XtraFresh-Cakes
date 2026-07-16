@@ -3,31 +3,25 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Helper to get testimonials from localStorage
-const loadTestimonials = () => {
-  try {
-    const data = typeof window !== 'undefined' && localStorage.getItem('testimonials');
-    return data ? JSON.parse(data) : [];
-  } catch (e) {
-    console.error('Failed to parse testimonials from localStorage', e);
-    return [];
-  }
-};
-
-const saveTestimonials = (testimonials) => {
-  try {
-    typeof window !== 'undefined' && localStorage.setItem('testimonials', JSON.stringify(testimonials));
-  } catch (e) {
-    console.error('Failed to save testimonials to localStorage', e);
-  }
-};
+import { fetchData } from '../../lib/database';
 
 export default function TestimonialCarousel() {
   const [testimonials, setTestimonials] = useState([]);
   const [current, setCurrent] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTestimonials(loadTestimonials());
+    const loadData = async () => {
+      try {
+        const data = await fetchData('Reviews');
+        setTestimonials(data);
+      } catch (error) {
+        console.error('Failed to load testimonials', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
   }, []);
 
   const next = () => setCurrent((prev) => (prev + 1) % testimonials.length);
@@ -40,11 +34,15 @@ export default function TestimonialCarousel() {
           What Our Customers Say
         </h2>
         {/* Carousel */}
-        {testimonials.length > 0 ? (
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+            <p>Loading reviews...</p>
+          </div>
+        ) : testimonials.length > 0 ? (
           <div style={{ position: 'relative' }}>
             <AnimatePresence mode="wait">
               <motion.div
-                key={testimonials[current].id}
+                key={testimonials[current].id || testimonials[current].date + testimonials[current].name}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}

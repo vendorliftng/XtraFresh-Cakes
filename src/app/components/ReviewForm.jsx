@@ -4,24 +4,9 @@ import React, { useState } from 'react';
 import { Loader2, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const saveTestimonials = (testimonials) => {
-  try {
-    typeof window !== 'undefined' && localStorage.setItem('testimonials', JSON.stringify(testimonials));
-  } catch (e) {
-    console.error('Failed to save testimonials to localStorage', e);
-  }
-};
+import { saveToSheet } from '../../lib/database';
 
-const loadTestimonials = () => {
-  try {
-    const data = typeof window !== 'undefined' && localStorage.getItem('testimonials');
-    return data ? JSON.parse(data) : [];
-  } catch (e) {
-    return [];
-  }
-};
-
-export default function ReviewForm() {
+export default function ReviewForm({ onReviewAdded }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [form, setForm] = useState({ name: '', message: '' });
@@ -31,23 +16,24 @@ export default function ReviewForm() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.message.trim()) return;
     
     setIsSubmitting(true);
     
-    // Simulate network delay for effect
-    setTimeout(() => {
-      const testimonials = loadTestimonials();
-      const newTestimonial = { id: Date.now(), name: form.name.trim(), message: form.message.trim() };
-      const updated = [newTestimonial, ...testimonials];
-      saveTestimonials(updated);
-      
-      setForm({ name: '', message: '' });
-      setIsSubmitting(false);
-      setIsSuccess(true);
-    }, 1000);
+    const date = new Date().toISOString().split('T')[0];
+    const rowData = [date, form.name.trim(), form.message.trim()];
+    
+    await saveToSheet('Reviews', rowData);
+    
+    if (onReviewAdded) {
+       onReviewAdded(); // trigger a re-fetch if needed
+    }
+    
+    setForm({ name: '', message: '' });
+    setIsSubmitting(false);
+    setIsSuccess(true);
   };
 
   return (
