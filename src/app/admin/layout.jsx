@@ -3,19 +3,35 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, Package, ShoppingCart, LogOut } from 'lucide-react';
-import { logoutAction } from './actions';
+import { useEffect, useState } from 'react';
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  useEffect(() => {
+    if (pathname !== '/admin/login') {
+      const token = localStorage.getItem('admin_token');
+      if (!token) {
+        router.push('/admin/login');
+      } else {
+        setIsAuthorized(true);
+      }
+    }
+  }, [pathname, router]);
 
   // Don't show sidebar on login page
   if (pathname === '/admin/login') {
     return <>{children}</>;
   }
 
-  const handleLogout = async () => {
-    await logoutAction();
+  if (!isAuthorized) {
+    return null; // Don't flash content before redirect
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('admin_token');
     router.push('/admin/login');
   };
 

@@ -41,6 +41,8 @@ jobs:
         run: npm ci
       - name: Build with Next.js
         run: npx next build
+        env:
+          NEXT_PUBLIC_SHEETS_WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbz5oZZQYEZk5l0HtLAgPErErzdabeEtbkY3YP1FXgsXeRKk9s-eGyVn9armQ1MjrcCNpQ/exec"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

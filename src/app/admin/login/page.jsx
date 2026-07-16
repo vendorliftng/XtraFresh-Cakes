@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, Lock, Mail } from 'lucide-react';
-import { loginAction, forgotPasswordAction } from '../actions';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,25 +18,50 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
     
-    const res = await loginAction(password);
-    if (res.error) {
-      setError(res.error);
+    try {
+      const url = process.env.NEXT_PUBLIC_SHEETS_WEBHOOK_URL;
+      const res = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({ action: "login", password }),
+        headers: { "Content-Type": "text/plain;charset=utf-8" }
+      });
+      const data = await res.json();
+      
+      if (data.error) {
+        setError(data.error);
+      } else if (data.success) {
+        localStorage.setItem('admin_token', data.token);
+        router.push('/admin/products');
+      }
+    } catch (err) {
+      setError("Connection failed. Try again.");
+    } finally {
       setLoading(false);
-    } else {
-      router.push('/admin/products');
     }
   };
 
   const handleForgot = async () => {
     setForgotLoading(true);
     setForgotMsg('');
-    const res = await forgotPasswordAction();
-    if (res.error) {
-      setForgotMsg("Error: " + res.error);
-    } else {
-      setForgotMsg("Password sent to your email!");
+    try {
+      const url = process.env.NEXT_PUBLIC_SHEETS_WEBHOOK_URL;
+      const res = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({ action: "forgot_password" }),
+        headers: { "Content-Type": "text/plain;charset=utf-8" }
+      });
+      const data = await res.json();
+      
+      if (data.error) {
+        setForgotMsg("Error: " + data.error);
+      } else {
+        setForgotMsg("Password sent to your email!");
+      }
+    } catch (err) {
+      setForgotMsg("Error: Connection failed.");
+    } finally {
+      setForgotLoading(false);
     }
-    setForgotLoading(false);
   };
 
   return (
