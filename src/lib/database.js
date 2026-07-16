@@ -31,9 +31,8 @@ export const saveToSheet = async (sheetName, rowData) => {
         row: rowData,
       }),
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain;charset=utf-8",
       },
-      mode: "no-cors",
     });
     return true;
   } catch (error) {
