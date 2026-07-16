@@ -62,6 +62,11 @@ export default function TestimonialCarousel() {
         ) : (
           <p style={{ textAlign: 'center', color: 'var(--color-text-muted)' }}>No reviews yet. Be the first to share your experience!</p>
         )}
+        
+        {/* Add Review Button */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+          <a href="/reviews" className="btn btn-primary" style={{ textDecoration: 'none' }}>Add your review</a>
+        </div>
       </div>
     </section>
   );
